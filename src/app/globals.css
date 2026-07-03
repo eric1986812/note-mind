@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  background: #f9fafb;
+  color: #1f2937;
+  -webkit-font-smoothing: antialiased;
+}
+
+.perspective { perspective: 1000px; }
+.transform-style-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }
+
+/* AI 追问聊天内的 Markdown 紧凑样式 */
+.chat-markdown {
+  line-height: 1.65;
+}
+.chat-markdown > div > * { margin-top: 0.5rem; }
+.chat-markdown > div > *:first-child { margin-top: 0; }
+.chat-markdown > div > *:last-child { margin-bottom: 0; }
+.chat-markdown h1, .chat-markdown h2, .chat-markdown h3 {
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0.7rem 0 0.3rem;
+}
+.chat-markdown h1 { font-size: 1.1rem; }
+.chat-markdown h2 { font-size: 1rem; }
+.chat-markdown h3 { font-size: 0.95rem; }
+.chat-markdown p { margin: 0.4rem 0; line-height: 1.7; }
+.chat-markdown strong { color: #047857; font-weight: 600; }
+.chat-markdown em { color: #1d4ed8; }
+.chat-markdown ul, .chat-markdown ol { margin: 0.4rem 0 0.4rem 1.4rem; }
+.chat-markdown ul { list-style: disc; }
+.chat-markdown ol { list-style: decimal; }
+.chat-markdown li { margin: 0.15rem 0; }
+.chat-markdown code {
+  background: #f1f5f9;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.85em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.chat-markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.6rem 0;
+  font-size: 0.85em;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.chat-markdown th {
+  background: #ecfdf5;
+  color: #065f46;
+  font-weight: 600;
+  padding: 6px 10px;
+  text-align: left;
+  border: 1px solid #d1fae5;
+}
+.chat-markdown td {
+  padding: 6px 10px;
+  border: 1px solid #e5e7eb;
+}
+.chat-markdown blockquote {
+  border-left: 3px solid #34d399;
+  background: #f0fdf4;
+  padding: 0.4rem 0.8rem;
+  margin: 0.5rem 0;
+  font-style: normal;
+  color: #1f2937;
+  border-radius: 0 4px 4px 0;
+}

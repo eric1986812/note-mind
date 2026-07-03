@@ -1,0 +1,51 @@
+{
+  "name": "notemind-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NoteMind AI - 专为中国大学生 / 考研党设计的 AI 笔记整理工具",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^0.0.36",
+    "@ai-sdk/react": "^0.0.13",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/dagre": "^0.7.54",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@xyflow/react": "^12.11.1",
+    "ai": "^3.2.0",
+    "autoprefixer": "^10.4.0",
+    "clsx": "^2.1.0",
+    "dagre": "^0.8.5",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "jszip": "^3.10.1",
+    "katex": "^0.17.0",
+    "lucide-react": "^0.400.0",
+    "mammoth": "^1.8.0",
+    "next": "14.2.5",
+    "node-html-parser": "^6.1.0",
+    "openai": "^4.104.0",
+    "postcss": "^8.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.5.0",
+    "unpdf": "^0.11.0",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5"
+  }
+}

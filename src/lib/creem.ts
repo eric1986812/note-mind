@@ -14,6 +14,8 @@
 // - GET  /v1/products/:id   查产品详情
 // - Webhook events:checkout.completed / subscription.active / subscription.canceled
 
+import crypto from 'crypto';
+
 const CREEM_API = 'https://api.creem.io/v1';
 
 // 老板的环境变量
@@ -76,7 +78,7 @@ export function verifyCreemSignature(
 
   // 签名内容:timestamp + "." + rawBody
   const message = `${t}.${rawBody}`;
-  const expected = require('crypto')
+  const expected = crypto
     .createHmac('sha256', secret)
     .update(message)
     .digest('hex');

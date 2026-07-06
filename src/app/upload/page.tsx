@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Upload, Loader2, Sparkles, Check, FileText, Network, Layers, Save } from 'lucide-react';
 import { saveNoteToHistory } from '@/lib/history';
 import { splitIntoChunks } from '@/lib/splitter';
+import { canUse, incrementUsage, getRemainingFree, getFreeLimit, resetUsage } from '@/lib/quota';
 
 type ChunkMeta = { index: number; title: string; content: string };
 type TaskState = 'pending' | 'active' | 'done';
@@ -82,6 +83,16 @@ export default function UploadPage() {
 
   const onUpload = async () => {
     if (!file) return;
+
+    // 配额检查:已用满 5 次跳支付
+    const check = canUse();
+    if (!check.allowed) {
+      // 把要上传的文件信息存起来,付完款回来继续
+      sessionStorage.setItem('getmind_pending_file', file.name);
+      router.push('/pricing?reason=free_limit');
+      return;
+    }
+
     setUploading(true);
     setProgressText('正在解析文件...');
     setTaskState('parse', 'active');
@@ -148,6 +159,10 @@ export default function UploadPage() {
 
       const id = `note_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
       setTaskState('save', 'active');
+
+      // 配额 +1(在 save 成功前)
+      const newCount = incrementUsage();
+
       const notePayload = {
         filename,
         note: noteData.note,
@@ -172,6 +187,13 @@ export default function UploadPage() {
       }
       setTaskState('save', 'done');
       setOverallPercent(100);
+      // 显示剩余免费次数(只有未付费用户才看)
+      const remaining = getRemainingFree();
+      if (remaining > 0 && remaining <= 2) {
+        sessionStorage.setItem('getmind_quota_warning', `还剩 ${remaining} 次免费,之后需要订阅 ¥39/月`);
+      } else if (remaining === 0) {
+        sessionStorage.setItem('getmind_quota_warning', '免费试用已用完,下次需要订阅');
+      }
       router.push(`/note?id=${id}`);
     } catch (e: any) {
       alert('出错了: ' + e.message);
@@ -211,11 +233,49 @@ export default function UploadPage() {
     setSelectedChunks(next);
   };
 
+  // 顶部显示剩余免费次数 / 用户状态
+  const [quotaInfo, setQuotaInfo] = useState<{ remaining: number; isPaid: boolean; userEmail?: string } | null>(null);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const check = canUse();
+    const paidPlan = localStorage.getItem('getmind_paid_plan');
+    const user = localStorage.getItem('getmind_user_v1');
+    setQuotaInfo({
+      remaining: getRemainingFree(),
+      isPaid: !!(paidPlan && parseInt(localStorage.getItem('getmind_paid_expire') || '0', 10) > Date.now()),
+      userEmail: user ? (JSON.parse(user).email) : undefined
+    });
+  }, [uploading]); // 每次上传完刷新
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary-50 to-white">
       <div className="max-w-2xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold text-gray-900 mb-3">上传你的学习资料</h1>
-          <p className="text-gray-600 mb-8">支持 PPT、PDF、Word、<strong>图片拍照/截图</strong>。最大 20MB。</p>
+          <p className="text-gray-600 mb-2">支持 PPT、PDF、Word、<strong>图片拍照/截图</strong>。最大 20MB。</p>
+          {/* 顶部状态条 */}
+          {quotaInfo && (
+            <div className={`mb-6 px-4 py-2 rounded-lg text-sm flex items-center justify-between ${
+              quotaInfo.isPaid
+                ? 'bg-green-50 text-green-800 border border-green-200'
+                : quotaInfo.remaining <= 1
+                ? 'bg-red-50 text-red-800 border border-red-200'
+                : quotaInfo.remaining <= 3
+                ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                : 'bg-blue-50 text-blue-800 border border-blue-200'
+            }`}>
+              <span>
+                {quotaInfo.isPaid
+                  ? `✅ 已订阅 ${localStorage.getItem('getmind_paid_plan') || ''} · 无限次生成`
+                  : `🆓 免费试用 · 还剩 ${quotaInfo.remaining}/${getFreeLimit()} 次`}
+              </span>
+              {quotaInfo.userEmail && (
+                <span className="text-xs text-gray-500">{quotaInfo.userEmail}</span>
+              )}
+              {!quotaInfo.isPaid && (
+                <a href="/pricing" className="text-xs underline">升级 ¥39/月</a>
+              )}
+            </div>
+          )}
 
         {/* 上传框 */}
         {!chunks && (

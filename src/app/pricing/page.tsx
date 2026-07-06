@@ -10,6 +10,7 @@
 
 import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { register, login, getCurrentUser, logout } from '@/lib/user';
 
 const PLANS = [
   {
@@ -73,6 +74,28 @@ function PricingPage() {
   const [error, setError] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<'wxpay' | 'creem'>('creem');
 
+  // 注册/登录弹窗(老板产品原则:付前要注册)
+  const [authModal, setAuthModal] = useState<{ mode: 'register' | 'login'; reason?: string } | null>(null);
+  const [authMode, setAuthMode] = useState<'register' | 'login'>('register');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authName, setAuthName] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  // 进来时检查:如果 reason=free_limit 强制弹注册
+  useEffect(() => {
+    const reason = searchParams.get('reason');
+    if (reason === 'free_limit') {
+      setAuthModal({ mode: 'register', reason: 'free_limit' });
+      setAuthMode('register');
+    }
+    // 恢复已登录用户
+    if (typeof window !== 'undefined') {
+      setCurrentUser(getCurrentUser());
+    }
+  }, [searchParams]);
+
   // Native 支付弹窗
   const [payModal, setPayModal] = useState<{
     outTradeNo: string;
@@ -99,6 +122,38 @@ function PricingPage() {
       }, 1500);
     }
   }, [searchParams]);
+
+  async function handleAuth() {
+    if (authMode === 'register') {
+      const res = await register(authEmail, authPassword, authName);
+      if (res.ok) {
+        setAuthModal(null);
+        setCurrentUser(getCurrentUser());
+        setAuthError('');
+      } else {
+        setAuthError(res.error || '注册失败');
+      }
+    } else {
+      const res = await login(authEmail, authPassword);
+      if (res.ok) {
+        setAuthModal(null);
+        setCurrentUser(getCurrentUser());
+        setAuthError('');
+      } else {
+        setAuthError(res.error || '登录失败');
+      }
+    }
+  }
+
+  // Creem / WxPay 都要先登录
+  function ensureAuthed(action: () => void) {
+    if (getCurrentUser()) {
+      action();
+    } else {
+      setAuthMode('register');
+      setAuthModal({ mode: 'register' });
+    }
+  }
 
   async function handleWxPay(plan: string) {
     if (plan === 'free') {
@@ -249,6 +304,17 @@ function PricingPage() {
           </div>
         </div>
 
+        {/* 已登录用户显示 */}
+        {currentUser && (
+          <div className="max-w-md mx-auto mb-4 bg-blue-50 border border-blue-200 text-blue-800 px-4 py-2 rounded-lg text-sm flex items-center justify-between">
+            <span>👋 {currentUser.name || currentUser.email} 已登录</span>
+            <button
+              onClick={() => { logout(); setCurrentUser(null); }}
+              className="text-xs text-gray-500 hover:text-gray-700 underline"
+            >退出</button>
+          </div>
+        )}
+
         {paymentMethod === 'wxpay' && (
           <div className="max-w-2xl mx-auto mb-6 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm">
             ⚠️ 微信支付需要域名 ICP 备案,getmind.vercel.app 暂时不能直接收款。
@@ -305,7 +371,9 @@ function PricingPage() {
 
               <button
                 onClick={() =>
-                  paymentMethod === 'creem' ? handleCreem(p.key) : handleWxPay(p.key)
+                  ensureAuthed(() =>
+                    paymentMethod === 'creem' ? handleCreem(p.key) : handleWxPay(p.key)
+                  )
                 }
                 disabled={loading === p.key}
                 className={`w-full py-3 px-4 rounded-lg font-medium transition ${
@@ -334,6 +402,84 @@ function PricingPage() {
           )}
         </div>
       </div>
+
+      {/* 注册/登录弹窗(老板原则:付前要注册) */}
+      {authModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full relative">
+            <button
+              onClick={() => setAuthModal(null)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl leading-none"
+            >×</button>
+
+            {authModal.reason === 'free_limit' && (
+              <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
+                🎉 您的 5 次免费试用已用完
+                <br />
+                订阅解锁 <strong>无限次</strong> 笔记生成
+              </div>
+            )}
+
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              {authMode === 'register' ? '创建账户' : '登录账户'}
+            </h2>
+            <p className="text-sm text-gray-500 mb-4">
+              {authMode === 'register'
+                ? '注册以管理订阅与查看历史'
+                : '欢迎回来,继续您的学习'}
+            </p>
+
+            <form onSubmit={async (e) => { e.preventDefault(); await handleAuth(); }}>
+              {authMode === 'register' && (
+                <input
+                  type="text"
+                  placeholder="昵称(选填)"
+                  value={authName}
+                  onChange={e => setAuthName(e.target.value)}
+                  className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-lg"
+                />
+              )}
+              <input
+                type="email"
+                placeholder="邮箱"
+                value={authEmail}
+                onChange={e => setAuthEmail(e.target.value)}
+                required
+                className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-lg"
+              />
+              <input
+                type="password"
+                placeholder="密码(至少 6 位)"
+                value={authPassword}
+                onChange={e => setAuthPassword(e.target.value)}
+                required
+                minLength={6}
+                className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-lg"
+              />
+
+              {authError && (
+                <div className="mb-3 text-sm text-red-600">{authError}</div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading === 'auth'}
+                className="w-full py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50"
+              >
+                {authMode === 'register' ? '注册并继续支付' : '登录'}
+              </button>
+            </form>
+
+            <div className="mt-4 text-center text-sm text-gray-500">
+              {authMode === 'register' ? (
+                <>已有账户?<button onClick={() => setAuthMode('login')} className="text-primary-600 underline ml-1">去登录</button></>
+              ) : (
+                <>没账户?<button onClick={() => setAuthMode('register')} className="text-primary-600 underline ml-1">去注册</button></>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 微信 Native 支付二维码弹窗 */}
       {payModal && paymentMethod === 'wxpay' && (

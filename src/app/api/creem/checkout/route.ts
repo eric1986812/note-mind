@@ -32,8 +32,6 @@ export async function POST(req: NextRequest) {
         product_id: planInfo.productId,
         // 成功后跳转
         success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://getmind.vercel.app'}/upload?paid=${plan}`,
-        // 取消后跳转
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://getmind.vercel.app'}/pricing`,
         // 客户邮箱(可选,Creem 会发收据)
         customer: customerEmail ? { email: customerEmail } : undefined,
         // 元数据:我们自己的订单号

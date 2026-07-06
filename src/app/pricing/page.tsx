@@ -8,7 +8,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 const PLANS = [
@@ -58,7 +58,16 @@ const PLANS = [
   }
 ];
 
-export default function PricingPage() {
+export default function PricingPageWrapper() {
+  // Next.js 14 + useSearchParams 必须包 Suspense(避免 build 预渲染失败)
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-500">加载中...</div>}>
+      <PricingPage />
+    </Suspense>
+  );
+}
+
+function PricingPage() {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState<string>('');
   const [error, setError] = useState<string>('');

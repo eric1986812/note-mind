@@ -333,6 +333,11 @@ export default function HomePage() {
           </div>
           <p>© 2026 NoteMind AI · 让知识主动适应你</p>
           <p className="mt-2 text-xs text-gray-500">由 Mavis 助手开发 · v0.1.0 MVP · 客服微信:见上传页底部</p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs">
+            <Link href="/privacy" className="hover:text-white">隐私政策</Link>
+            <span className="text-gray-600">·</span>
+            <Link href="/terms" className="hover:text-white">服务条款</Link>
+          </div>
         </div>
       </footer>
     </main>

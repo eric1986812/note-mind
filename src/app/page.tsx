@@ -337,7 +337,10 @@ export default function HomePage() {
             <Link href="/privacy" className="hover:text-white">隐私政策</Link>
             <span className="text-gray-600">·</span>
             <Link href="/terms" className="hover:text-white">服务条款</Link>
+            <span className="text-gray-600">·</span>
+            <Link href="/disclaimer" className="hover:text-white">AI 免责声明</Link>
           </div>
+          <p className="mt-3 text-xs text-gray-600">由 MiniMax-M3 模型驱动</p>
         </div>
       </footer>
     </main>

@@ -189,17 +189,43 @@ function NotePageInner() {
     setChatInput('');
     setChatHistory(h => [...h, { role: 'user', content: userMsg }]);
     setChatLoading(true);
-    try {
-      const res = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: userMsg, context: note })
-      });
-      const data = await res.json();
-      setChatHistory(h => [...h, { role: 'ai', content: data.answer }]);
-    } catch (e: any) {
-      setChatHistory(h => [...h, { role: 'ai', content: '出错了: ' + e.message }]);
+
+    // 前端再重试 1 次(后端已重试 3 次,这里兜底防止 Vercel 冷启动)
+    let lastError = '';
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: userMsg, context: note })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          lastError = data.error || `HTTP ${res.status}`;
+          if (attempt === 0 && /529|overloaded|rate_limit|服务繁忙/i.test(lastError)) {
+            await new Promise(r => setTimeout(r, 3000));
+            continue;
+          }
+          break;
+        }
+        setChatHistory(h => [...h, { role: 'ai', content: data.answer }]);
+        setChatLoading(false);
+        return;
+      } catch (e: any) {
+        lastError = e.message || '网络错';
+        if (attempt === 0) {
+          await new Promise(r => setTimeout(r, 2000));
+          continue;
+        }
+        break;
+      }
     }
+
+    const isOverloaded = /529|overloaded|rate_limit|服务繁忙|网络|timeout|ETIMEDOUT|ENOTFOUND/i.test(lastError);
+    const aiMsg = isOverloaded
+      ? '😅 服务器正在高峰期繁忙,后端已重试 3 次。可以稍等 1-2 分钟再问我一次。\n\n技术细节: ' + lastError.slice(0, 100)
+      : '出错了: ' + lastError;
+    setChatHistory(h => [...h, { role: 'ai', content: aiMsg }]);
     setChatLoading(false);
   };
 

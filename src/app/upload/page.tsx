@@ -121,7 +121,23 @@ export default function UploadPage() {
       // 短文直接全量生成
       await runGeneration(file.name, parseData.text);
     } catch (e: any) {
-      alert('出错了: ' + e.message);
+      const msg = String(e.message || '');
+      // 区分过载/网络错 vs 真错
+      const isOverloaded = /529|overloaded|rate_limit|服务繁忙|请稍后|稍后重试|网络|timeout|ETIMEDOUT|ENOTFOUND/i.test(msg);
+
+      if (isOverloaded) {
+        alert(
+          '😅 MiniMax 服务器正在高峰期繁忙\n\n' +
+          '📌 已自动重试 3 次仍未成功,通常是整点高峰(09:00 / 14:00 / 20:00)\n\n' +
+          '💡 建议:\n' +
+          '• 等 3-5 分钟再点重试\n' +
+          '• 换到非整点上传(成功率 ↑90%)\n' +
+          '• 暂时用 ≤2500 字的短文测\n\n' +
+          '错误详情: ' + msg.slice(0, 150)
+        );
+      } else {
+        alert('出错了: ' + msg);
+      }
       setUploading(false);
       setProgressText('');
       setTasks(prev => prev.map(t => ({ ...t, state: 'pending' as TaskState, progress: 0 })));

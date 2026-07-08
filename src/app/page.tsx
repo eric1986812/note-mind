@@ -35,21 +35,21 @@ export default function HomePage() {
             <Sparkles className="w-4 h-4" /> 开学季福利 · 限时免费 5 份资料
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-[1.15]">
-            上传 1 份课堂 PPT，<br />
-            <span className="text-primary-600">30 秒拿到 4 件套学习资料</span>
+            上传 1 份 PPT / 论文 / PDF,<br />
+            <span className="text-primary-600">30 秒,AI 帮你进入学习心流</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mb-4 max-w-2xl mx-auto leading-relaxed">
-            MindFlow 自动把老师的 PPT、英文论文、PDF 资料,转成
-            <strong className="text-gray-900">结构化笔记 + 思维导图 + 记忆卡片</strong>。
+            MindFlow 把老师的 PPT、英文论文、PDF 资料,
+            <strong className="text-gray-900">1 键变成你的 4 件套学习资料</strong>。
             <br className="hidden md:block" />
-            期末、考研、考公,不用再手抄笔记、不用再硬背。
+            期末、考研、考公、出国 — 不再手抄,不再硬背,把时间留给真正理解。
           </p>
           <p className="text-sm text-gray-500 mb-10">
-            已有 100+ 高校学生使用 · 上线 1 周处理资料 1,200 份
+            已有 100+ 高校学生在用 · 上线 1 周处理资料 1,200 份
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/upload" className="bg-primary-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-primary-700 shadow-lg shadow-primary-200 flex items-center justify-center gap-2">
-              立即试用 · 免费 5 份 <ArrowRight className="w-5 h-5" />
+              30 秒拿到 4 份学习材料 <ArrowRight className="w-5 h-5" />
             </Link>
             <Link href="#how" className="bg-white text-gray-700 px-8 py-4 rounded-xl text-lg font-semibold border border-gray-200 hover:border-primary-300">
               看 30 秒演示
@@ -145,8 +145,8 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-br from-primary-50 to-emerald-50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">你拿到的 4 件套</h2>
-            <p className="text-gray-700">1 份资料 = 4 种学习模式,不用再切换 4 个 App</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">上传 1 份资料,得到 4 份学习材料</h2>
+            <p className="text-gray-700 text-lg">不用切换 4 个 App · 不用记 4 套密码 · 不用再手抄笔记</p>
           </div>
           <div className="grid md:grid-cols-2 gap-5">
             {[

@@ -46,7 +46,7 @@ function NotePageInner() {
   const mindmap = data?.mindmap ?? null;
   const cards = data?.cards || [];
 
-  const [tab, setTab] = useState<'note' | 'mindmap' | 'card' | 'bilingual' | 'terms' | 'chat'>('note');
+  const [tab, setTab] = useState<'note' | 'mindmap' | 'card' | 'bilingual' | 'chat'>('note');
   const [chatInput, setChatInput] = useState('');
   const [chatHistory, setChatHistory] = useState<{ role: 'user' | 'ai'; content: string }[]>([]);
   const [chatLoading, setChatLoading] = useState(false);
@@ -292,16 +292,15 @@ function NotePageInner() {
         </div>
       )}
 
-      {/* Tabs */}
+      {/* Tabs - 4 大核心 + 1 翻译(中英对照合并术语表) */}
       <div className="bg-white border-b">
         <div className="max-w-6xl mx-auto px-6 flex gap-1">
           {[
-            { k: 'note', icon: FileText, label: '文字笔记' },
-            { k: 'mindmap', icon: Network, label: '思维导图' },
-            { k: 'card', icon: Layers, label: `卡片 (${cards.length})` },
-            { k: 'bilingual', icon: Languages, label: bilingualLabel },
-            { k: 'terms', icon: BookOpen, label: `术语 (${terms?.length || '?'})` },
-            { k: 'chat', icon: MessageCircle, label: 'AI 追问' }
+            { k: 'note', icon: FileText, label: '文字笔记', primary: true },
+            { k: 'mindmap', icon: Network, label: '思维导图', primary: true },
+            { k: 'card', icon: Layers, label: `记忆卡片 (${cards.length})`, primary: true },
+            { k: 'chat', icon: MessageCircle, label: 'AI 追问', primary: true },
+            { k: 'bilingual', icon: Languages, label: bilingualLabel, primary: false },
           ].map(t => (
             <button
               key={t.k}
@@ -339,79 +338,73 @@ function NotePageInner() {
         )}
 
         {tab === 'bilingual' && (
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="text-sm font-bold text-gray-500 mb-3 uppercase tracking-wide">
-                📄 原文 {detectedLang === 'zh' ? '🇨🇳' : detectedLang === 'en' ? '🇬🇧' : ''} ({data?.raw?.length || 0} 字)
-              </h3>
-              {data?.raw ? (
-                <div className="prose prose-sm max-w-none max-h-[600px] overflow-y-auto pr-2">
-                  <MarkdownView content={data.raw} />
-                </div>
-              ) : (
-                <p className="text-gray-400 text-sm">暂无原文</p>
-              )}
+          <div className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <h3 className="text-sm font-bold text-gray-500 mb-3 uppercase tracking-wide">
+                  📄 原文 {detectedLang === 'zh' ? '🇨🇳' : detectedLang === 'en' ? '🇬🇧' : ''} ({data?.raw?.length || 0} 字)
+                </h3>
+                {data?.raw ? (
+                  <div className="prose prose-sm max-w-none max-h-[600px] overflow-y-auto pr-2">
+                    <MarkdownView content={data.raw} />
+                  </div>
+                ) : (
+                  <p className="text-gray-400 text-sm">暂无原文</p>
+                )}
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm">
+                <h3 className="text-sm font-bold text-primary-700 mb-3 uppercase tracking-wide flex items-center gap-2">
+                  🌐 译文 {targetLang === 'zh' ? '🇨🇳' : '🇬🇧'}
+                  {translationLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                </h3>
+                {!translation && !translationLoading && (
+                  <p className="text-gray-400 text-sm py-12 text-center">切换到本 Tab 后自动开始翻译</p>
+                )}
+                {translationLoading && (
+                  <LoadingBar
+                    loading={translationLoading}
+                    finished={!!translation}
+                    label={detectedLang === 'zh' ? '正在翻译为英文...' : '正在翻译为中文...'}
+                    type="translate"
+                    detail="AI 正在逐段理解并翻译,通常 10-20 秒"
+                  />
+                )}
+                {translation && (
+                  <div className="prose prose-sm max-w-none max-h-[600px] overflow-y-auto pr-2">
+                    <MarkdownView content={translation} />
+                  </div>
+                )}
+              </div>
             </div>
+            {/* 术语表 - 内嵌在中英对照 Tab 里 */}
             <div className="bg-white p-6 rounded-xl shadow-sm">
-              <h3 className="text-sm font-bold text-primary-700 mb-3 uppercase tracking-wide flex items-center gap-2">
-                🌐 译文 {targetLang === 'zh' ? '🇨🇳' : '🇬🇧'}
-                {translationLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-              </h3>
-              {!translation && !translationLoading && (
-                <p className="text-gray-400 text-sm py-12 text-center">切换到本 Tab 后自动开始翻译</p>
-              )}
-              {translationLoading && (
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  📖 关键术语表
+                  {termsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                </h3>
+                {terms && <span className="text-sm text-gray-500">共 {terms.length} 个术语</span>}
+              </div>
+              {termsLoading && !terms && (
                 <LoadingBar
-                  loading={translationLoading}
-                  finished={!!translation}
-                  label={detectedLang === 'zh' ? '正在翻译为英文...' : '正在翻译为中文...'}
-                  type="translate"
-                  detail="AI 正在逐段理解并翻译,通常 10-20 秒"
+                  loading={termsLoading}
+                  finished={!!terms}
+                  label="正在提取关键术语..."
+                  type="terms"
+                  detail="AI 正在识别学术 / 学科核心术语,通常 12-25 秒"
                 />
               )}
-              {translation && (
-                <div className="prose prose-sm max-w-none max-h-[600px] overflow-y-auto pr-2">
-                  <MarkdownView content={translation} />
+              {terms && terms.length > 0 && (
+                <div className="grid md:grid-cols-2 gap-3">
+                  {terms.map((t, i) => (
+                    <div key={i} className="border border-gray-200 rounded-lg p-3 hover:border-primary-300 transition">
+                      <div className="font-bold text-gray-900">{t.term}</div>
+                      <div className="text-sm text-gray-600 mt-1">{t.definition}</div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
-          </div>
-        )}
-
-        {tab === 'terms' && (
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                📖 术语表
-                {termsLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-              </h3>
-              {terms && <span className="text-sm text-gray-500">共 {terms.length} 个术语</span>}
-            </div>
-            {termsLoading && !terms && (
-              <LoadingBar
-                loading={termsLoading}
-                finished={!!terms}
-                label="正在提取关键术语..."
-                type="terms"
-                detail="AI 正在识别学术 / 学科核心术语,通常 12-25 秒"
-              />
-            )}
-            {terms && terms.length > 0 && (
-              <div className="space-y-3">
-                {terms.map((t, i) => (
-                  <div key={i} className="border-l-4 border-primary-400 bg-primary-50/50 p-4 rounded-r-lg">
-                    <div className="flex items-baseline gap-3 mb-1">
-                      <span className="font-bold text-primary-800">{t.term}</span>
-                      <span className="text-gray-700">· {t.translation}</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{t.definition}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-            {!termsLoading && !terms && (
-              <p className="text-gray-400 text-sm py-12 text-center">切换到本 Tab 后自动开始提取</p>
-            )}
           </div>
         )}
 

@@ -1,5 +1,5 @@
 // AI 模型免责声明
-// NoteMind AI 使用第三方 AI 模型(MiniMax-M3)提供内容生成
+// MindFlow 使用第三方 AI 模型(MiniMax-M3)提供内容生成
 
 export const dynamic = 'force-static';
 
@@ -14,7 +14,7 @@ export default function Disclaimer() {
           <section>
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">服务说明</h2>
             <p>
-              GetMind AI(以下简称"本服务")由<strong>泸县玄澈服装店</strong>(个体工商户)运营,
+              MindFlow(以下简称"本服务")由<strong>泸县玄澈服装店</strong>(个体工商户)运营,
               是一个 AI 学习笔记助手。
             </p>
             <p>
@@ -26,8 +26,8 @@ export default function Disclaimer() {
           <section>
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">独立性声明</h2>
             <p>
-              GetMind AI 是一个<strong>独立产品</strong>,与 MiniMax 公司无隶属关系。
-              我们使用独立品牌、独立服务设计、独立定价,产品名称"GetMind"不包含任何 AI 模型名称。
+              MindFlow 是一个<strong>独立产品</strong>,与 MiniMax 公司无隶属关系。
+              我们使用独立品牌、独立服务设计、独立定价,产品名称"MindFlow"不包含任何 AI 模型名称。
             </p>
           </section>
 
@@ -64,14 +64,14 @@ export default function Disclaimer() {
               <strong>AI Model Disclaimer</strong>
             </p>
             <p>
-              GetMind AI is powered by third-party AI models (MiniMax-M3).
+              MindFlow is powered by third-party AI models (MiniMax-M3).
               AI-generated content is for reference only and accuracy is not guaranteed.
               Please verify all AI outputs independently before use.
             </p>
             <p>
               This service is independent from MiniMax. We use an independent brand,
               independent product design, and independent pricing.
-              The product name "GetMind" does not contain any AI model name.
+              The product name "MindFlow" does not contain any AI model name.
             </p>
             <p>
               We are not liable for any damages arising from reliance on AI outputs.

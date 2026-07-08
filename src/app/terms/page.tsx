@@ -15,7 +15,7 @@ export default function Terms() {
           <section>
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">1. 服务说明</h2>
             <p>
-              GetMind AI 是由<strong>泸县玄澈服装店</strong>(个体工商户)提供的 AI 学习笔记助手。
+              MindFlow 是由<strong>泸县玄澈服装店</strong>(个体工商户)提供的 AI 学习笔记助手。
               用户上传学习资料(PPT、PDF、Word 等),我们使用 AI 模型生成笔记、思维导图、记忆卡片、学习答疑。
             </p>
           </section>
@@ -59,7 +59,7 @@ export default function Terms() {
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>您的内容归您</strong>:您保留对上传资料的所有权</li>
               <li><strong>生成内容归您</strong>:AI 生成的笔记、思维导图等归您所有,您可以自由使用</li>
-              <li><strong>我们的服务归我们</strong>:网站代码、UI 设计、品牌"GetMind"归我们所有</li>
+              <li><strong>我们的服务归我们</strong>:网站代码、UI 设计、品牌"MindFlow"归我们所有</li>
             </ul>
           </section>
 

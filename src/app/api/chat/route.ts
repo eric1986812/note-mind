@@ -4,7 +4,7 @@ import { callMinimax, isMinimaxConfigured } from '@/lib/minimax';
 export const runtime = 'nodejs';
 export const maxDuration = 30;
 
-const SYSTEM_PROMPT = `你是 NoteMind AI 的学习助手。基于用户提供的资料内容回答问题。
+const SYSTEM_PROMPT = `你是 MindFlow 的学习助手。基于用户提供的资料内容回答问题。
 
 要求:
 1. 优先基于资料内容回答,引用具体段落

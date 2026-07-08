@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">1. 引言</h2>
             <p>
-              GetMind AI(以下简称"我们")由<strong>泸县玄澈服装店</strong>(个体工商户)运营,非常重视您的隐私。
+              MindFlow(以下简称"我们")由<strong>泸县玄澈服装店</strong>(个体工商户)运营,非常重视您的隐私。
               本隐私政策说明我们如何收集、使用、存储和保护您的个人信息。
               我们仅收集为您提供服务所必需的最少信息。
             </p>

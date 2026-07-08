@@ -159,7 +159,7 @@ export function buildExportMarkdown(opts: {
   mindmap?: { label: string; children?: any[] } | null;
 }): string {
   const parts: string[] = [];
-  parts.push(`# ${opts.filename} - NoteMind AI 学习笔记\n`);
+  parts.push(`# ${opts.filename} - MindFlow 学习笔记\n`);
   parts.push(`> 生成时间: ${new Date().toLocaleString('zh-CN')}\n`);
 
   if (opts.note) {

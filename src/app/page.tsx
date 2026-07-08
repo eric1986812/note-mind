@@ -13,7 +13,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Brain className="w-7 h-7 text-primary-600" />
-            <span className="font-bold text-xl text-gray-900">NoteMind AI</span>
+            <span className="font-bold text-xl text-gray-900">MindFlow</span>
           </div>
           <div className="flex items-center gap-6 text-sm">
             <Link href="/history" className="text-gray-600 hover:text-primary-600 hidden sm:inline">📚 我的笔记</Link>
@@ -39,7 +39,7 @@ export default function HomePage() {
             <span className="text-primary-600">30 秒拿到 4 件套学习资料</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mb-4 max-w-2xl mx-auto leading-relaxed">
-            NoteMind AI 自动把老师的 PPT、英文论文、PDF 资料,转成
+            MindFlow 自动把老师的 PPT、英文论文、PDF 资料,转成
             <strong className="text-gray-900">结构化笔记 + 思维导图 + 记忆卡片</strong>。
             <br className="hidden md:block" />
             期末、考研、考公,不用再手抄笔记、不用再硬背。
@@ -75,7 +75,7 @@ export default function HomePage() {
                 tag: '🎓 本科生',
                 title: '期末 1 周,5 门课的 PPT 还没整理',
                 pain: '老师 400 页 PPT 讲完了,你却要花 3 天手抄重点,抄完还没时间复习。',
-                result: '用 NoteMind:1 份 PPT 30 秒出笔记 + 思维导图 + 卡片,1 小时搞定 1 门课。'
+                result: '用 MindFlow:1 份 PPT 30 秒出笔记 + 思维导图 + 卡片,1 小时搞定 1 门课。'
               },
               {
                 icon: GraduationCap,
@@ -171,7 +171,7 @@ export default function HomePage() {
       <section id="compare" className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">传统 vs NoteMind</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">传统 vs MindFlow</h2>
             <p className="text-gray-600">同样的 1 份生物课 PPT(40 页),看看差别</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
@@ -189,7 +189,7 @@ export default function HomePage() {
             </div>
             <div className="border-2 border-primary-200 bg-primary-50/50 rounded-2xl p-6">
               <div className="flex items-center gap-2 text-primary-700 font-semibold mb-4">
-                <CheckCircle2 className="w-5 h-5" /> NoteMind AI 出活
+                <CheckCircle2 className="w-5 h-5" /> MindFlow 出活
               </div>
               <ul className="space-y-3 text-sm text-gray-700">
                 <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-primary-600 flex-shrink-0 mt-0.5" /> <strong>30 秒</strong> 拿到结构化笔记</li>
@@ -329,9 +329,9 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="flex items-center justify-center gap-2 mb-3">
             <Brain className="w-5 h-5 text-primary-500" />
-            <span className="text-white font-bold">NoteMind AI</span>
+            <span className="text-white font-bold">MindFlow</span>
           </div>
-          <p>© 2026 NoteMind AI · 让知识主动适应你</p>
+          <p>© 2026 MindFlow · 让知识主动适应你</p>
           <p className="mt-2 text-xs text-gray-500">由 Mavis 助手开发 · v0.1.0 MVP · 客服微信:见上传页底部</p>
           <div className="mt-4 flex items-center justify-center gap-4 text-xs">
             <Link href="/privacy" className="hover:text-white">隐私政策</Link>

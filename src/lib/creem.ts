@@ -32,14 +32,14 @@ export const CREEM_PLANS: Record<
   monthly: {
     key: 'monthly',
     productId: CREEM_PRODUCT_MONTHLY,
-    name: 'GetMind Semester Plan (Monthly)',
+    name: 'MindFlow 学习计划 (Monthly)',
     amount: 39, // USD
     days: 30
   },
   yearly: {
     key: 'yearly',
     productId: CREEM_PRODUCT_YEARLY,
-    name: 'GetMind Annual Plan',
+    name: 'MindFlow Annual Plan',
     amount: 299, // USD (海外用户)
     days: 365
   }

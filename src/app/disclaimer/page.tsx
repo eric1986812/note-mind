@@ -83,7 +83,7 @@ export default function Disclaimer() {
             <p>
               经营者:<strong>泸县玄澈服装店</strong>(个体工商户)<br />
               邮箱:<strong>414902207@qq.com</strong><br />
-              网址:<strong>https://getmind.vercel.app</strong>
+              网址:<strong>https://mindflow.wang</strong>
             </p>
           </section>
         </div>

@@ -112,7 +112,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: authHeader,
-        'User-Agent': 'getmind/1.0 wxpay-client'
+        'User-Agent': 'mindflow/1.0 wxpay-client'
       },
       body: bodyStr
     });

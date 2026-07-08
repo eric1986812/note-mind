@@ -1,5 +1,5 @@
 // 隐私政策
-// 老板 NoteMind AI / getmind.vercel.app
+// 老板 MindFlow / mindflow.wang
 // 国内合规版本,覆盖《个人信息保护法》《网络安全法》《数据安全法》
 
 export const dynamic = 'force-static';
@@ -109,7 +109,7 @@ export default function PrivacyPolicy() {
             <p>
               经营者:<strong>泸县玄澈服装店</strong>(个体工商户)<br />
               邮箱:<strong>414902207@qq.com</strong><br />
-              网址:<strong>https://getmind.vercel.app</strong>
+              网址:<strong>https://mindflow.wang</strong>
             </p>
           </section>
         </div>

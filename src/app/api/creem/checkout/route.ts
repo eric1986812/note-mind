@@ -31,12 +31,11 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         product_id: planInfo.productId,
         // 成功后跳转
-        success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://getmind.vercel.app'}/upload?paid=${plan}`,
-        // 元数据:我们自己的订单号
+        success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang'}/upload?paid=${plan}`,
+        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang'}/pricing`,
         metadata: {
-          plan,
-          productName: planInfo.name,
-          source: 'getmind.ai'
+          plan: plan,
+          source: 'mindflow.wang'
         },
         // 客户邮箱(可选)
         ...(customerEmail ? { customer: { email: customerEmail } } : {})

@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       headers: {
         Accept: 'application/json',
         Authorization: authHeader,
-        'User-Agent': 'getmind/1.0 wxpay-client'
+        'User-Agent': 'mindflow/1.0 wxpay-client'
       }
     });
 

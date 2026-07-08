@@ -1,5 +1,5 @@
 // 定价页面 - 国内微信支付 + 海外 Creem 双轨
-// 老板用 getmind.vercel.app/pricing 打开
+// 老板用 mindflow.wang/pricing 打开
 //
 // 双策略:
 // 1. 微信支付(Native 扫码): 等 ICP 备案完成才能上线(JSAPI 也一样要备案)
@@ -317,7 +317,7 @@ function PricingPage() {
 
         {paymentMethod === 'wxpay' && (
           <div className="max-w-2xl mx-auto mb-6 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm">
-            ⚠️ 微信支付需要域名 ICP 备案,getmind.vercel.app 暂时不能直接收款。
+            ⚠️ 微信支付需要域名 ICP 备案,mindflow.wang 暂时不能直接收款。
             <br />
             ✅ 我们已启动备案流程,预计 3-15 天通过。通过后立刻切换。
             <br />

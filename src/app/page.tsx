@@ -32,7 +32,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-br from-primary-50 via-white to-emerald-50 py-20 md:py-24">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <span className="inline-flex items-center gap-1.5 bg-amber-100 text-amber-800 text-sm font-semibold px-4 py-1.5 rounded-full mb-6">
-            <Sparkles className="w-4 h-4" /> 开学季福利 · 限时免费 5 份资料
+            <Sparkles className="w-4 h-4" /> 开学季福利 · 限时免费 5 份学习材料
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-[1.15]">
             上传 1 份 PPT / 论文 / PDF,<br />
@@ -40,7 +40,7 @@ export default function HomePage() {
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mb-4 max-w-2xl mx-auto leading-relaxed">
             MindFlow 把老师的 PPT、英文论文、PDF 资料,
-            <strong className="text-gray-900">1 键变成你的 4 件套学习资料</strong>。
+            <strong className="text-gray-900">1 键变成你的 4 份学习材料学习资料</strong>。
             <br className="hidden md:block" />
             期末、考研、考公、出国 — 不再手抄,不再硬背,把时间留给真正理解。
           </p>
@@ -125,7 +125,7 @@ export default function HomePage() {
             <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-primary-200" />
             {[
               { n: '1', icon: Upload, t: '上传资料', d: '拖拽 PPT / PDF / Word,30 秒搞定。' },
-              { n: '2', icon: Sparkles, t: 'AI 自动 4 件套', d: '笔记 + 导图 + 卡片 + 追问,1 分钟出。' },
+              { n: '2', icon: Sparkles, t: 'AI 自动 4 份学习材料', d: '笔记 + 导图 + 卡片 + 追问,1 分钟出。' },
               { n: '3', icon: BookOpen, t: '开始复习', d: '卡片按记忆曲线推,导图查骨架。' }
             ].map(s => (
               <div key={s.n} className="text-center relative">
@@ -258,7 +258,7 @@ export default function HomePage() {
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {[
-              { name: '免费版', price: '¥0', period: '永久免费', features: ['每月 5 份资料', '4 大功能全部解锁', 'AI 追问 10 次 / 月'], cta: '免费开始', hot: false },
+              { name: '免费版', price: '¥0', period: '永久免费', features: ['每月 5 份学习材料', '4 大功能全部解锁', 'AI 追问 10 次 / 月'], cta: '免费开始', hot: false },
               { name: '学期版', price: '¥39', period: '/ 月', features: ['无限资料', '全部功能', 'AI 追问 200 次 / 月', '无水印导出'], cta: '立即订阅', hot: true },
               { name: '年度版', price: '¥299', period: '/ 年(省 36%)', features: ['学期版全部权益', '优先客服', '历史资料不限量', '考前突击模式'], cta: '立即订阅', hot: false }
             ].map(p => (
@@ -298,7 +298,7 @@ export default function HomePage() {
               { q: '上传的资料安全吗?会不会被泄露?', a: '所有文件仅用于本次 AI 处理,处理完成后 24 小时内自动删除。我们不存储、不训练、不分享任何用户数据(详见隐私协议)。' },
               { q: '支持哪些文件类型?最大多大?', a: '支持 PPT / PPTX / PDF / Word / TXT / 图片。单文件最大 20MB。扫描版 PDF 暂不支持(需要文字版)。' },
               { q: 'AI 生成的质量怎么样?会不会胡说?', a: '基于 MiniMax M3 大模型,只基于你上传的原文生成,不会臆造数据。数学公式、英文术语、考点都按原文事实。生成不满意可重新生成。' },
-              { q: '免费版和付费版差别大吗?', a: '免费版每月 5 份资料够轻度使用。学期版(¥39/月)适合期末 / 考研党无限刷,年度版适合长期学习者。功能完全一样,差别是额度。' },
+              { q: '免费版和付费版差别大吗?', a: '免费版每月 5 份学习材料够轻度使用。学期版(¥39/月)适合期末 / 考研党无限刷,年度版适合长期学习者。功能完全一样,差别是额度。' },
               { q: '我能退款吗?', a: '付费后 7 天内不满意,100% 退款,无理由。联系客服(页面底部微信)即可。' }
             ].map((f, i) => (
               <details key={i} className="bg-white rounded-xl p-5 group">
@@ -317,6 +317,7 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">还在等什么?下次期末前,先免费用 5 份</h2>
+          <p className="text-primary-100 text-lg">5 分钟注册,5 份学习材料免费出 — 看完不订阅,我都替你觉得亏。</p>
           <p className="text-primary-100 mb-8 text-lg">不用注册,直接上传就用</p>
           <Link href="/upload" className="inline-flex items-center gap-2 bg-white text-primary-700 px-8 py-4 rounded-xl text-lg font-bold hover:bg-primary-50 shadow-xl">
             立即开始 · 免费 5 份 <ArrowRight className="w-5 h-5" />

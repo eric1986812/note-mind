@@ -32,7 +32,6 @@ export async function POST(req: NextRequest) {
         product_id: planInfo.productId,
         // 成功后跳转
         success_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang'}/upload?paid=${plan}`,
-        cancel_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang'}/pricing`,
         metadata: {
           plan: plan,
           source: 'mindflow.wang'

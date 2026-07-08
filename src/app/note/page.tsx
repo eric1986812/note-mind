@@ -53,7 +53,7 @@ function NotePageInner() {
   const [exportOpen, setExportOpen] = useState(false);
   const [copyState, setCopyState] = useState<'idle' | 'ok' | 'fail'>('idle');
   const [pdfLoading, setPdfLoading] = useState(false);
-  const [shareState, setShareState] = useState<'idle' | 'ok' | 'fail'>('idle');
+  const [shareState, setShareState] = useState<'idle' | 'ok' | 'fail' | 'too_long'>('idle');
   const noteRef = useRef<HTMLDivElement>(null);
 
   // 翻译 + 术语(懒加载)
@@ -111,7 +111,25 @@ function NotePageInner() {
       c: data.cards
     });
     const encoded = btoa(unescape(encodeURIComponent(payload)));
-    const url = `${location.origin}/share?d=${encoded}`;
+    // 强制使用生产域名(避免 localhost / vercel.app 子域分享出错的链接)
+    const baseUrl = (typeof window !== 'undefined' && (window as any).__APP_URL) ||
+                    process.env.NEXT_PUBLIC_APP_URL ||
+                    'https://mindflow.wang';
+    const origin = (() => {
+      try {
+        const u = new URL(baseUrl);
+        return u.origin;
+      } catch {
+        return 'https://mindflow.wang';
+      }
+    })();
+    const url = `${origin}/share?d=${encoded}`;
+    // 太长警告(URL > 4KB 很多 IM 会截断)
+    if (url.length > 4000) {
+      setShareState('too_long');
+      setTimeout(() => setShareState('idle'), 4000);
+      return;
+    }
     // 复制链接
     let ok = false;
     try {
@@ -244,8 +262,9 @@ function NotePageInner() {
               >
                 {shareState === 'ok' ? <Check className="w-4 h-4 text-green-600" /> :
                  shareState === 'fail' ? <LinkIcon className="w-4 h-4 text-red-500" /> :
+                 shareState === 'too_long' ? <LinkIcon className="w-4 h-4 text-amber-500" /> :
                  <Share2 className="w-4 h-4" />}
-                {shareState === 'ok' ? '已复制链接' : shareState === 'fail' ? '复制失败' : '分享'}
+                {shareState === 'ok' ? '已复制链接' : shareState === 'fail' ? '复制失败' : shareState === 'too_long' ? '笔记太长,无法分享' : '分享'}
               </button>
               <div className="relative">
               <button

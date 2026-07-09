@@ -11,53 +11,7 @@
 import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { register, login, getCurrentUser, logout } from '@/lib/user';
-
-const PLANS = [
-  {
-    key: 'free',
-    name: '免费版',
-    price: '¥0',
-    period: '永久',
-    highlight: false,
-    features: ['每月 5 份笔记', '基础笔记生成', '基础思维导图', '8 张记忆卡片'],
-    cta: '当前方案',
-    isPaid: false
-  },
-  {
-    key: 'monthly',
-    name: '学期版',
-    price: '¥39',
-    period: '月付',
-    highlight: true,
-    features: [
-      '无限次生成',
-      '完整 4 大功能(笔记/导图/卡片/追问)',
-      '长文分章节(>2500字自动切)',
-      '中英对照 + 术语表',
-      '图片识别 / OCR',
-      '学习历史',
-      '笔记导出(MD/DOC/PDF)'
-    ],
-    cta: '立即开通',
-    isPaid: true
-  },
-  {
-    key: 'yearly',
-    name: '年度版',
-    price: '¥299',
-    period: '年付',
-    highlight: false,
-    saveHint: '省 ¥169',
-    features: [
-      '学期版全部功能',
-      '解锁未来 P1 功能(校园代理 / Supabase 同步)',
-      '优先客服',
-      '专属学习群'
-    ],
-    cta: '立即开通',
-    isPaid: true
-  }
-];
+import { useLang } from '@/lib/lang-context';
 
 export default function PricingPageWrapper() {
   // Next.js 14 + useSearchParams 必须包 Suspense(避免 build 预渲染失败)
@@ -70,7 +24,60 @@ export default function PricingPageWrapper() {
 
 function PricingPage() {
   const searchParams = useSearchParams();
+  const { t, lang } = useLang();
   const [loading, setLoading] = useState<string>('');
+
+  const PLANS = [
+    {
+      key: 'free',
+      name: t('pricing.planFreeName'),
+      price: t('pricing.planFreePrice'),
+      period: t('pricing.planFreePeriod'),
+      highlight: false,
+      features: [
+        t('pricing.planFreeF1'),
+        t('pricing.planFreeF2'),
+        t('pricing.planFreeF3'),
+        t('pricing.planFreeF4')
+      ],
+      cta: t('pricing.currentPlan'),
+      isPaid: false
+    },
+    {
+      key: 'monthly',
+      name: t('pricing.planMonthName'),
+      price: t('pricing.planMonthPrice'),
+      period: t('pricing.planMonthPeriod'),
+      highlight: true,
+      features: [
+        t('pricing.planMonthF1'),
+        t('pricing.planMonthF2'),
+        t('pricing.planMonthF3'),
+        t('pricing.planMonthF4'),
+        t('pricing.planMonthF5'),
+        t('pricing.planMonthF6'),
+        t('pricing.planMonthF7')
+      ],
+      cta: t('pricing.subscribe'),
+      isPaid: true
+    },
+    {
+      key: 'yearly',
+      name: t('pricing.planYearName'),
+      price: t('pricing.planYearPrice'),
+      period: t('pricing.planYearPeriod'),
+      highlight: false,
+      saveHint: t('pricing.saveHint'),
+      features: [
+        t('pricing.planYearF1'),
+        t('pricing.planYearF2'),
+        t('pricing.planYearF3'),
+        t('pricing.planYearF4')
+      ],
+      cta: t('pricing.subscribe'),
+      isPaid: true
+    }
+  ];
   const [error, setError] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<'wxpay' | 'creem'>('creem');
 
@@ -289,7 +296,7 @@ function PricingPage() {
                   : 'text-slate-600'
               }`}
             >
-              🌍 海外华人(Creem)
+              🌍 {t('pricing.payMethodCreem')}
             </button>
             <button
               onClick={() => setPaymentMethod('wxpay')}
@@ -299,7 +306,7 @@ function PricingPage() {
                   : 'text-slate-600'
               }`}
             >
-              🇨🇳 国内(微信支付)
+              🇨🇳 {t('pricing.payMethodWxpay')}
             </button>
           </div>
         </div>
@@ -307,7 +314,7 @@ function PricingPage() {
         {/* 已登录用户显示 */}
         {currentUser && (
           <div className="max-w-md mx-auto mb-4 bg-blue-50 border border-blue-200 text-blue-800 px-4 py-2 rounded-lg text-sm flex items-center justify-between">
-            <span>👋 {currentUser.name || currentUser.email} 已登录</span>
+            <span>👋 {currentUser.name || currentUser.email} {lang === 'zh' ? '已登录' : '(signed in)'}</span>
             <button
               onClick={() => { logout(); setCurrentUser(null); }}
               className="text-xs text-gray-500 hover:text-gray-700 underline"
@@ -391,12 +398,12 @@ function PricingPage() {
         <div className="mt-12 text-center text-sm text-slate-500">
           {paymentMethod === 'creem' ? (
             <>
-              <p>支付由 Creem.io 处理 · 支持 Visa / MasterCard / American Express</p>
+              <p>支付由 Creem.io 处理 · 支持 Visa / MasterCard / American Express — Payments by Creem.io · Visa / MasterCard / Amex supported</p>
               <p className="mt-2">任何国家都可以付款,即时开通</p>
             </>
           ) : (
             <>
-              <p>支付由微信支付担保 · 7 天无理由退款</p>
+              <p>支付由微信支付担保 · 7 天无理由退款 — Powered by WeChat Pay · 7-day refund</p>
               <p className="mt-2">ICP 备案完成后自动切换到自动拉起支付</p>
             </>
           )}
@@ -421,19 +428,19 @@ function PricingPage() {
             )}
 
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {authMode === 'register' ? '创建账户' : '登录账户'}
+              {authMode === 'register' ? `🎓 ${t('pricing.submitRegister')}` : `👋 ${t('pricing.submitLogin')}`}
             </h2>
             <p className="text-sm text-gray-500 mb-4">
               {authMode === 'register'
-                ? '注册以管理订阅与查看历史'
-                : '欢迎回来,继续您的学习'}
+                ? t('pricing.freeCtaRegister')
+                : `${t('pricing.welcomeBack')}, ${t('home.meta.siteName') === 'MindFlow' ? (lang === 'zh' ? '继续您的学习' : 'keep learning') : ''}`}
             </p>
 
             <form onSubmit={async (e) => { e.preventDefault(); await handleAuth(); }}>
               {authMode === 'register' && (
                 <input
                   type="text"
-                  placeholder="昵称(选填)"
+                  placeholder={t('pricing.nicknamePh')}
                   value={authName}
                   onChange={e => setAuthName(e.target.value)}
                   className="w-full mb-3 px-4 py-2 border border-gray-300 rounded-lg"
@@ -441,7 +448,7 @@ function PricingPage() {
               )}
               <input
                 type="email"
-                placeholder="邮箱"
+                placeholder={t('pricing.emailPh')}
                 value={authEmail}
                 onChange={e => setAuthEmail(e.target.value)}
                 required
@@ -449,7 +456,7 @@ function PricingPage() {
               />
               <input
                 type="password"
-                placeholder="密码(至少 6 位)"
+                placeholder={t('pricing.passwordPh') + ' (≥6)'}
                 value={authPassword}
                 onChange={e => setAuthPassword(e.target.value)}
                 required
@@ -466,7 +473,7 @@ function PricingPage() {
                 disabled={loading === 'auth'}
                 className="w-full py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 disabled:opacity-50"
               >
-                {authMode === 'register' ? '注册并继续支付' : '登录'}
+                {authMode === 'register' ? t('pricing.submitRegister') : t('pricing.submitLogin')}
               </button>
             </form>
 
@@ -497,15 +504,15 @@ function PricingPage() {
                 <div className="text-6xl mb-4">✅</div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">支付成功!</h2>
                 <p className="text-slate-600 mb-6">会员已开通,正在跳转...</p>
-                <div className="animate-pulse text-sm text-slate-500">3 秒后自动跳转</div>
+                <div className="animate-pulse text-sm text-slate-500">{t('pricing.wxpayAutoRedirect')}</div>
               </div>
             ) : (
               <>
                 <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">
-                  微信扫码支付
+                  {t('pricing.wxpayTitle')}
                 </h2>
                 <p className="text-center text-slate-600 mb-6">
-                  应付金额:{' '}
+                  {t('pricing.wxpayAmount')}:{' '}
                   <span className="text-3xl font-bold text-blue-600">
                     {payModal.amountDisplay}
                   </span>
@@ -542,11 +549,9 @@ function PricingPage() {
       {/* 退订 / 客服 footer */}
       <div className="max-w-5xl mx-auto px-6 py-8 text-center text-sm text-slate-500 border-t border-slate-200 mt-12">
         <p>
-          已订阅?可在 <a href="https://creem.io/portal" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Creem 客户门户</a> 查看/退订订阅。
+          {t('pricing.cancelSub')}
         </p>
-        <p className="mt-2">
-          退款 / 客服:<a href="mailto:support@mindflow.wang" className="text-blue-600 hover:underline">support@mindflow.wang</a>(3 个工作日内回复)
-        </p>
+        <p className="mt-2" dangerouslySetInnerHTML={{ __html: t('pricing.supportSub').replace('support@mindflow.wang', '<a href="mailto:support@mindflow.wang" class="text-blue-600 hover:underline">support@mindflow.wang</a>') }} />
       </div>
     </div>
   );

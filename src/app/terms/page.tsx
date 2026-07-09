@@ -38,7 +38,7 @@ export default function Terms() {
             <p>
               <strong>7 天无理由退款</strong>:首次订阅 7 天内未使用笔记生成功能可申请全额退款。
               已生成笔记超过 5 份的订阅,不予退款。
-              退款请联系 <strong>414902207@qq.com</strong>。
+              退款请联系 <strong>support@mindflow.wang</strong>。
             </p>
           </section>
 
@@ -108,7 +108,7 @@ export default function Terms() {
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">11. 联系方式</h2>
             <p>
               经营者:<strong>泸县玄澈服装店</strong>(个体工商户)<br />
-              邮箱:<strong>414902207@qq.com</strong><br />
+              邮箱:<strong>support@mindflow.wang</strong><br />
               网址:<strong>https://mindflow.wang</strong>
             </p>
           </section>

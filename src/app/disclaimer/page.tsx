@@ -82,7 +82,7 @@ export default function Disclaimer() {
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">联系方式</h2>
             <p>
               经营者:<strong>泸县玄澈服装店</strong>(个体工商户)<br />
-              邮箱:<strong>414902207@qq.com</strong><br />
+              邮箱:<strong>support@mindflow.wang</strong><br />
               网址:<strong>https://mindflow.wang</strong>
             </p>
           </section>

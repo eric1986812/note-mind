@@ -538,6 +538,16 @@ function PricingPage() {
           </div>
         </div>
       )}
+
+      {/* 退订 / 客服 footer */}
+      <div className="max-w-5xl mx-auto px-6 py-8 text-center text-sm text-slate-500 border-t border-slate-200 mt-12">
+        <p>
+          已订阅?可在 <a href="https://creem.io/portal" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Creem 客户门户</a> 查看/退订订阅。
+        </p>
+        <p className="mt-2">
+          退款 / 客服:<a href="mailto:support@mindflow.wang" className="text-blue-600 hover:underline">support@mindflow.wang</a>(3 个工作日内回复)
+        </p>
+      </div>
     </div>
   );
 }

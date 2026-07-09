@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
               <li>注销账号(如有账号系统)</li>
             </ul>
             <p className="mt-3">
-              行使上述权利,请联系:<strong>414902207@qq.com</strong>(我们会在 15 个工作日内回复)。
+              行使上述权利,请联系:<strong>support@mindflow.wang</strong>(我们会在 15 个工作日内回复)。
             </p>
           </section>
 
@@ -108,7 +108,7 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">10. 联系我们</h2>
             <p>
               经营者:<strong>泸县玄澈服装店</strong>(个体工商户)<br />
-              邮箱:<strong>414902207@qq.com</strong><br />
+              邮箱:<strong>support@mindflow.wang</strong><br />
               网址:<strong>https://mindflow.wang</strong>
             </p>
           </section>

@@ -271,7 +271,7 @@ export default function HomePage() {
               { q: '支持哪些文件类型?最大多大?', a: '支持 PPT / PPTX / PDF / Word / TXT / 图片。单文件最大 20MB。扫描版 PDF 暂不支持(需要文字版)。' },
               { q: 'AI 生成的质量怎么样?会不会胡说?', a: '基于 MiniMax M3 大模型,只基于你上传的原文生成,不会臆造数据。数学公式、英文术语、考点都按原文事实。生成不满意可重新生成。' },
               { q: '免费版和付费版差别大吗?', a: '免费版每月 5 份学习材料够轻度使用。学期版(¥39/月)适合期末 / 考研党无限刷,年度版适合长期学习者。功能完全一样,差别是额度。' },
-              { q: '我能退款吗?', a: '付费后 7 天内不满意,100% 退款,无理由。联系客服(页面底部微信)即可。' }
+              { q: '我能退款吗?', a: '付费后 7 天内不满意,100% 退款,无理由。发邮件到 support@mindflow.wang 即可。' }
             ].map((f, i) => (
               <details key={i} className="bg-white rounded-xl p-5 group">
                 <summary className="font-semibold text-gray-900 cursor-pointer flex items-center justify-between">
@@ -305,15 +305,19 @@ export default function HomePage() {
             <span className="text-white font-bold">MindFlow</span>
           </div>
           <p>© 2026 MindFlow · 让知识主动适应你</p>
-          <p className="mt-2 text-xs text-gray-500">由 Mavis 助手开发 · v0.1.0 MVP · 客服微信:见上传页底部</p>
-          <div className="mt-4 flex items-center justify-center gap-4 text-xs">
+          <p className="mt-2 text-xs text-gray-500">v0.1.0 MVP · 由 MiniMax-M3 模型驱动 · 客服:<a href="mailto:support@mindflow.wang" className="hover:text-white underline">support@mindflow.wang</a></p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs flex-wrap">
             <Link href="/privacy" className="hover:text-white">隐私政策</Link>
             <span className="text-gray-600">·</span>
             <Link href="/terms" className="hover:text-white">服务条款</Link>
             <span className="text-gray-600">·</span>
             <Link href="/disclaimer" className="hover:text-white">AI 免责声明</Link>
+            <span className="text-gray-600">·</span>
+            <Link href="/acceptable-use" className="hover:text-white">可接受使用政策 (AUP)</Link>
+            <span className="text-gray-600">·</span>
+            <a href="https://creem.io/portal" target="_blank" rel="noopener noreferrer" className="hover:text-white">管理订阅 / 退订</a>
           </div>
-          <p className="mt-3 text-xs text-gray-600">由 MiniMax-M3 模型驱动</p>
+          <p className="mt-3 text-xs text-gray-600">MindFlow 是独立产品,基于第三方大语言模型构建,与模型供应商无隶属关系。</p>
         </div>
       </footer>
     </main>

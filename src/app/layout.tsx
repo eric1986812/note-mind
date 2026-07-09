@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <LangProvider lang={lang}>
           {/* 全局浮动语言切换器 — 右上角 */}
-          <div className="fixed top-4 right-4 z-50">
+          <div className="fixed top-3 right-3 sm:top-4 sm:right-4 z-50">
             <LangSwitcher country={countryLabel} />
           </div>
           {children}

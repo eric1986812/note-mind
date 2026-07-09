@@ -98,7 +98,6 @@ function NotePageInner() {
   const onTabChange = (newTab: typeof tab) => {
     setTab(newTab);
     if (newTab === 'bilingual') loadTranslation();
-    if (newTab === 'terms') loadTerms();
   };
 
   const onShare = async () => {

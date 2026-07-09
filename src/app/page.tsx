@@ -2,7 +2,7 @@ import Link from 'next/link';
 import {
   Brain, FileText, Network, Layers, MessageCircle, Sparkles,
   Upload, CheckCircle2, X, Clock, BookOpen, GraduationCap, Globe,
-  Shield, Zap, Users, ArrowRight, Quote
+  Shield, Zap, Users, ArrowRight
 } from 'lucide-react';
 
 export default function HomePage() {
@@ -45,7 +45,7 @@ export default function HomePage() {
             期末、考研、考公、出国 — 不再手抄,不再硬背,把时间留给真正理解。
           </p>
           <p className="text-sm text-gray-500 mb-10">
-            已有 100+ 高校学生在用 · 上线 1 周处理资料 1,200 份
+            永久免费 5 份/月 · 无需信用卡 · 30 秒出笔记
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/upload" className="bg-primary-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-primary-700 shadow-lg shadow-primary-200 flex items-center justify-center gap-2">
@@ -203,49 +203,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== 社会证明 ===== */}
+      {/* ===== 创始人自述(只有真的,没有编的) ===== */}
       <section className="py-16 bg-gray-900 text-white">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8 text-center mb-12">
-            {[
-              { n: '100 万美金', d: 'ThetaWave AI 9 个月 ARR(同模式海外对标)' },
-              { n: '85%', d: '付费用户次月留存率(行业平均 30%)' },
-              { n: '7-8%', d: '订阅转化率(健康 SaaS 基准 2-5%)' }
-            ].map((s, i) => (
-              <div key={i}>
-                <div className="text-4xl md:text-5xl font-extrabold text-primary-400 mb-2">{s.n}</div>
-                <div className="text-sm text-gray-300">{s.d}</div>
-              </div>
-            ))}
-          </div>
-          <div className="border-t border-gray-700 pt-10 grid md:grid-cols-2 gap-6">
-            <div className="bg-gray-800 rounded-xl p-6 relative">
-              <Quote className="w-8 h-8 text-primary-400 absolute top-4 right-4 opacity-30" />
-              <p className="text-gray-200 italic leading-relaxed mb-4">
-                "以前期末一周要 5 门 PPT 抄 5 份笔记,现在 1 份 30 秒搞定,剩下时间全用来复习,期末绩点从 3.2 涨到 3.7。"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center font-bold">L</div>
-                <div>
-                  <div className="font-semibold text-sm">小林</div>
-                  <div className="text-xs text-gray-400">某 985 大三 · 生物专业</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-800 rounded-xl p-6 relative">
-              <Quote className="w-8 h-8 text-primary-400 absolute top-4 right-4 opacity-30" />
-              <p className="text-gray-200 italic leading-relaxed mb-4">
-                "考研政治 1000 多页,AI 直接出 200 张卡片,按记忆曲线推给我复习,2 个月从 50 分提到 72 分。"
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold">Y</div>
-                <div>
-                  <div className="font-semibold text-sm">小杨</div>
-                  <div className="text-xs text-gray-400">2026 考研党 · 已上岸</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <p className="text-sm text-primary-300 font-semibold mb-3 uppercase tracking-wide">为什么做 MindFlow</p>
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-relaxed">
+            "我自己期末周被 PPT 淹过,所以做了这个工具。"
+          </h2>
+          <p className="text-gray-300 leading-relaxed mb-4">
+            老板做过 300 家零售门店,深知"重复劳动"是最大的效率杀手。
+            学生党的"抄笔记"和店长的"贴标签"本质一样 — 90% 时间花在整理,只剩 10% 给真正的思考。
+          </p>
+          <p className="text-gray-300 leading-relaxed">
+            MindFlow 不画大饼、不编数据。
+            <strong className="text-white">自己用、真有用</strong>,才推荐给你。
+          </p>
         </div>
       </section>
 

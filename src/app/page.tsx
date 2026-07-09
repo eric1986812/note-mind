@@ -13,25 +13,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* ===== 顶部导航 ===== */}
-      <nav className="border-b border-gray-200 sticky top-0 bg-white/95 backdrop-blur z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Brain className="w-7 h-7 text-primary-600" />
-            <span className="font-bold text-xl text-gray-900">{t('meta.siteName')}</span>
-          </div>
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="/history" className="text-gray-600 hover:text-primary-600 hidden sm:inline">{t('home.navNotes')}</Link>
-            <Link href="#how" className="text-gray-600 hover:text-primary-600 hidden sm:inline">{t('home.navHow')}</Link>
-            <Link href="#compare" className="text-gray-600 hover:text-primary-600 hidden sm:inline">{t('home.navCompare')}</Link>
-            <Link href="#pricing" className="text-gray-600 hover:text-primary-600 hidden sm:inline">{t('home.navPricing')}</Link>
-            <Link href="#faq" className="text-gray-600 hover:text-primary-600 hidden md:inline">{t('home.navFaq')}</Link>
-            <Link href="/upload" className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 font-medium">
-              {t('home.navCta')}
-            </Link>
-          </div>
-        </div>
-      </nav>
+      {/* 顶部导航已移到 layout.tsx(全局 navbar + LangSwitcher) */}
 
       {/* ===== Hero ===== */}
       <section className="bg-gradient-to-br from-primary-50 via-white to-emerald-50 py-20 md:py-24">

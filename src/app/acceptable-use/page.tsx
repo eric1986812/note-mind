@@ -1,15 +1,19 @@
 'use client';
 
+import { useLang } from '../lib/lang-context';
+
 export default function AcceptableUsePage() {
+  const { lang } = useLang();
+  const isEn = lang === 'en';
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-8">
-          <a href="/" className="text-sm text-emerald-600 hover:underline">← 返回主页</a>
+          <a href="/" className="text-sm text-emerald-600 hover:underline">← {isEn ? 'Back to Home' : '返回主页'}</a>
         </div>
         <header className="mb-10">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">MindFlow 可接受使用政策 (AUP)</h1>
-          <p className="text-slate-600">最后更新:2026 年 7 月 9 日 · 适用于 mindflow.wang 全站服务</p>
+          <h1 className="text-4xl font-bold text-slate-900 mb-3">{isEn ? 'MindFlow Acceptable Use Policy (AUP)' : 'MindFlow 可接受使用政策 (AUP)'}</h1>
+          <p className="text-slate-600">{isEn ? 'Last updated: July 9, 2026 · Applies to all of mindflow.wang' : '最后更新:2026 年 7 月 9 日 · 适用于 mindflow.wang 全站服务'}</p>
         </header>
         <div className="prose prose-slate max-w-none space-y-6 text-slate-800 leading-relaxed">
           <section className="bg-amber-50 border-l-4 border-amber-500 p-5 rounded">
@@ -20,7 +24,7 @@ export default function AcceptableUsePage() {
             </p>
           </section>
           <section>
-            <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">1. 允许的用途</h2>
+            <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">{isEn ? '1. Permitted Uses' : '1. 允许的用途'}</h2>
             <ul className="list-disc pl-6 space-y-1">
               <li>整理老师课堂 PPT、PDF 讲义、英文论文等学习材料</li>
               <li>生成结构化笔记、思维导图、记忆卡片,辅助理解与复习</li>
@@ -29,7 +33,7 @@ export default function AcceptableUsePage() {
             </ul>
           </section>
           <section>
-            <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">2. 明确禁止的用途</h2>
+            <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">{isEn ? '2. Strictly Prohibited Uses' : '2. 明确禁止的用途'}</h2>
             <p className="font-semibold text-red-700 mb-2">您不得使用 MindFlow 生成、上传、传播以下内容:</p>
             <ul className="list-disc pl-6 space-y-1">
               <li><strong>色情、淫秽、NSFW 内容</strong></li>
@@ -45,7 +49,7 @@ export default function AcceptableUsePage() {
             </ul>
           </section>
           <section>
-            <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">3. 关于"作业代写"的明确禁止</h2>
+            <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-3">{isEn ? '3. Explicit Ban on "Homework Writing"' : '3. 关于"作业代写"的明确禁止'}</h2>
             <p className="font-semibold text-red-700 mb-2">MindFlow 不是"代写作业"工具。</p>
             <p>本平台不提供以下服务,所有相关使用场景均被禁止:</p>
             <ul className="list-disc pl-6 space-y-1">

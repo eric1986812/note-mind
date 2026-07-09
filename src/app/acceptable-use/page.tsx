@@ -1,6 +1,6 @@
 'use client';
 
-import { useLang } from '../lib/lang-context';
+import { useLang } from '../../lib/lang-context';
 
 export default function AcceptableUsePage() {
   const { lang } = useLang();

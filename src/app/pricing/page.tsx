@@ -218,10 +218,12 @@ function PricingPage() {
     setError('');
 
     try {
+      // 必须传 customerEmail(用户已登录),这样 webhook 来时能识别是谁
+      const userEmail = currentUser?.email || '';
       const res = await fetch('/api/creem/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan })
+        body: JSON.stringify({ plan, customerEmail: userEmail })
       });
       const data = await res.json();
 

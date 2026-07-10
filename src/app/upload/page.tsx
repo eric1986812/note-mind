@@ -1,10 +1,11 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Upload, Loader2, Sparkles, Check, FileText, Network, Layers, Save } from 'lucide-react';
 import { saveNoteToHistory } from '@/lib/history';
 import { splitIntoChunks } from '@/lib/splitter';
 import { canUse, incrementUsage, getRemainingFree, getFreeLimit, resetUsage } from '@/lib/quota';
+import { getCurrentUser, updateUserPlan } from '@/lib/user';
 
 type ChunkMeta = { index: number; title: string; content: string };
 type TaskState = 'pending' | 'active' | 'done';
@@ -20,6 +21,7 @@ type Task = {
 
 export default function UploadPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [progressText, setProgressText] = useState('');
@@ -34,6 +36,27 @@ export default function UploadPage() {
   const [selectedChunks, setSelectedChunks] = useState<Set<number>>(new Set());
   const startTimeRef = useRef<number>(0);
   const animFrameRef = useRef<number | null>(null);
+
+  // 处理 ?paid= 参数 — 用户从 Creem 支付成功后跳回来
+  useEffect(() => {
+    const plan = searchParams?.get('paid');
+    if (plan === 'monthly' || plan === 'yearly') {
+      const user = getCurrentUser();
+      if (user) {
+        const expiresAt = plan === 'yearly'
+          ? Date.now() + 365 * 24 * 60 * 60 * 1000
+          : Date.now() + 30 * 24 * 60 * 60 * 1000;
+        updateUserPlan(user.email, plan, expiresAt);
+        // 显示成功提示
+        alert(`🎉 支付成功!${plan === 'yearly' ? '年度版' : '学期版'}会员已开通,开始使用吧!`);
+        // 清掉 query,防止刷新重复
+        router.replace('/upload');
+      } else {
+        // 用户没登录 — 让他先登录
+        router.push(`/pricing?reason=login_first&paid=${plan}`);
+      }
+    }
+  }, [searchParams, router]);
 
   // 进度条动画: 模拟 0-95% 跑动 (卡在 95% 等真完成)
   useEffect(() => {

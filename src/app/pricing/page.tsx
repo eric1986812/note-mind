@@ -134,6 +134,14 @@ function PricingPage() {
     if (authMode === 'register') {
       const res = await register(authEmail, authPassword, authName);
       if (res.ok) {
+        // 绑定邀请关系(新注册用户如果 ?ref= 开过来)
+        try {
+          const { bindReferral, capturePendingReferral } = await import('@/lib/referral');
+          capturePendingReferral();
+          bindReferral(authEmail);
+        } catch (e) {
+          console.warn('referral bind failed:', e);
+        }
         setAuthModal(null);
         setCurrentUser(getCurrentUser());
         setAuthError('');

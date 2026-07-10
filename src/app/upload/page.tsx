@@ -211,6 +211,18 @@ export default function UploadPage() {
         sessionStorage.setItem('getmind_quota_warning', '免费试用已用完,下次需要订阅');
       }
       router.push(`/note?id=${id}`);
+
+      // 触发邀请奖励(被邀请人完成首次生成时,自动给邀请人 +30 天)
+      try {
+        const { tryClaimRewardForCurrentUser } = await import('../../lib/referral');
+        const reward = tryClaimRewardForCurrentUser();
+        if (reward.rewarded) {
+          console.log('🎁 你的邀请人获得了 30 天会员奖励');
+        }
+      } catch (e) {
+        // 静默失败 — 不影响用户主流程
+        console.warn('referral claim failed:', e);
+      }
     } catch (e: any) {
       alert('出错了: ' + e.message);
       setUploading(false);
@@ -287,6 +299,9 @@ export default function UploadPage() {
               {quotaInfo.userEmail && (
                 <span className="text-xs text-gray-500">{quotaInfo.userEmail}</span>
               )}
+              <a href="/invite" className="text-xs text-primary-600 hover:underline font-medium">
+                🎁 邀请好友得 1 个月
+              </a>
               {!quotaInfo.isPaid && (
                 <a href="/pricing" className="text-xs underline">升级 ¥39/月</a>
               )}

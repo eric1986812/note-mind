@@ -228,5 +228,26 @@
     "monthPlan": "Semester",
     "yearPlan": "Annual",
     "featureHighlight": "🔥 Recommended"
+  },
+  "invite": {
+    "title": "Invite a friend, both get 1 month free",
+    "subtitle": "Share your link with classmates or study buddies. After they sign up and try MindFlow, you automatically get 30 days of Semester plan.",
+    "codeLabel": "Your invite code",
+    "linkLabel": "Share link",
+    "copyBtn": "Copy",
+    "copied": "Copied!",
+    "statTotal": "Total invites",
+    "statPending": "Pending",
+    "statRewarded": "Rewarded",
+    "rulesTitle": "How rewards work",
+    "rule1": "Friend signs up via your unique link.",
+    "rule2": "Friend completes their first note generation.",
+    "rule3": "Your account automatically gets +30 days of Semester plan (stacks on existing subscriptions).",
+    "historyTitle": "Invite history",
+    "statusRewarded": "Rewarded",
+    "statusPending": "Pending",
+    "loginTitle": "Sign in to see your invite code",
+    "loginSub": "Sign-up takes 3 seconds.",
+    "loginBtn": "Sign in / Sign up"
   }
 }

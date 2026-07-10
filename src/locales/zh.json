@@ -228,5 +228,26 @@
     "monthPlan": "学期版",
     "yearPlan": "年度版",
     "featureHighlight": "🔥 推荐"
+  },
+  "invite": {
+    "title": "邀请好友,各得 1 个月会员",
+    "subtitle": "分享链接给学弟学妹/考研战友,TA 注册并试用后,你自动拿 30 天会员",
+    "codeLabel": "你的邀请码",
+    "linkLabel": "分享链接",
+    "copyBtn": "复制",
+    "copied": "已复制!",
+    "statTotal": "邀请总数",
+    "statPending": "待激活",
+    "statRewarded": "已拿奖励",
+    "rulesTitle": "奖励规则",
+    "rule1": "好友通过你的链接注册 MindFlow",
+    "rule2": "好友完成首次笔记生成(免费 5 份以内)",
+    "rule3": "系统自动给你的账户 +30 天学期版会员(可叠加)",
+    "historyTitle": "邀请记录",
+    "statusRewarded": "已奖励",
+    "statusPending": "待激活",
+    "loginTitle": "登录后查看邀请码",
+    "loginSub": "分享需先注册账号,3 秒搞定",
+    "loginBtn": "去登录 / 注册"
   }
 }

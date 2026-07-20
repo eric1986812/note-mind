@@ -8,7 +8,7 @@ import { LangSwitcher } from '../components/LangSwitcher';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang';
 
 export const metadata: Metadata = {
-  title: 'MindFlow — Turn any PDF into notes, mind map & flashcards in 30s',
+  title: 'MindFlow — Let knowledge adapt to you',
   description:
     'AI study assistant for college students. Upload a PDF or PPT, get structured notes, a mind map, flashcards, and AI Q&A in 30 seconds. Free 5 notes per month, no credit card.',
   keywords: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: APP_URL,
     siteName: 'MindFlow',
-    title: 'MindFlow — Turn any PDF into notes, mind map & flashcards in 30s',
+    title: 'MindFlow — Let knowledge adapt to you',
     description:
       'AI study assistant for college students. Upload a PDF, get 4 ready-to-study things in 30 seconds. Free 5 notes per month.',
     images: [
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MindFlow — Turn any PDF into notes, mind map & flashcards in 30s',
+    title: 'MindFlow — Let knowledge adapt to you',
     description:
       'AI study assistant for college students. Free 5 notes per month, no credit card.',
     images: ['/og-image.svg'],

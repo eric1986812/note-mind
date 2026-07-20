@@ -247,6 +247,18 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== 收尾强化区(让知识主动适应你) ===== */}
+      <section className="py-20 bg-gradient-to-br from-primary-50 to-emerald-50">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5">
+            {t('home.heroTitle1')}
+          </h2>
+          <p className="text-lg text-gray-700 leading-relaxed">
+            {t('home.closingLine')}
+          </p>
+        </div>
+      </section>
+
       {/* ===== Footer ===== */}
       <footer className="bg-gray-900 text-gray-400 py-10 text-sm">
         <div className="max-w-6xl mx-auto px-6 text-center">

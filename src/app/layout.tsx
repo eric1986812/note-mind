@@ -5,11 +5,73 @@ import { langFromCountry, type Lang } from '../lib/i18n';
 import { LangProvider } from '../lib/lang-context';
 import { LangSwitcher } from '../components/LangSwitcher';
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang';
+
 export const metadata: Metadata = {
-  title: 'MindFlow - 进入学习心流,让知识主动流入心智 | Get into the learning flow',
+  title: 'MindFlow — Turn any PDF into notes, mind map & flashcards in 30s',
   description:
-    '专为中国大学生 / 考研党 / 海外华人设计的 AI 笔记整理工具。上传 PPT、PDF,一键生成文字笔记、思维导图、记忆卡片。',
-  icons: { icon: '/favicon.svg' }
+    'AI study assistant for college students. Upload a PDF or PPT, get structured notes, a mind map, flashcards, and AI Q&A in 30 seconds. Free 5 notes per month, no credit card.',
+  keywords: [
+    'AI note taking',
+    'PDF to notes',
+    'AI study tool',
+    'college students',
+    'mind map',
+    'flashcards',
+    'spaced repetition',
+    'study abroad',
+    'bilingual notes'
+  ],
+  authors: [{ name: 'MindFlow' }],
+  creator: 'MindFlow',
+  metadataBase: new URL(APP_URL),
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en': '/en',
+      'zh-CN': '/zh'
+    }
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: APP_URL,
+    siteName: 'MindFlow',
+    title: 'MindFlow — Turn any PDF into notes, mind map & flashcards in 30s',
+    description:
+      'AI study assistant for college students. Upload a PDF, get 4 ready-to-study things in 30 seconds. Free 5 notes per month.',
+    images: [
+      {
+        url: '/og-image.svg',
+        width: 1200,
+        height: 630,
+        alt: 'MindFlow — AI study assistant'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MindFlow — Turn any PDF into notes, mind map & flashcards in 30s',
+    description:
+      'AI study assistant for college students. Free 5 notes per month, no credit card.',
+    images: ['/og-image.svg'],
+    creator: '@mindflow_wang'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1
+    }
+  },
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg'
+  }
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

@@ -88,6 +88,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       ? (cookieLang as Lang)
       : langFromCountry(country);
 
+  // GA4 跟踪 - 配置 Vercel env NEXT_PUBLIC_GA_MEASUREMENT_ID 后自动启用
+
   // GA4 Measurement ID(从 Vercel env 读)
   const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 

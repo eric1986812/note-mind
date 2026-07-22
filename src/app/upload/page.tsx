@@ -47,6 +47,22 @@ export default function UploadPage() {
           ? Date.now() + 365 * 24 * 60 * 60 * 1000
           : Date.now() + 30 * 24 * 60 * 60 * 1000;
         updateUserPlan(user.email, plan, expiresAt);
+
+        // GA4 转化事件(告诉老板:"X 个人付了钱")
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          (window as any).gtag('event', 'purchase', {
+            transaction_id: `${user.email}-${Date.now()}`,
+            value: plan === 'yearly' ? 299 : 39,
+            currency: 'USD',
+            items: [{
+              item_id: plan,
+              item_name: plan === 'yearly' ? 'MindFlow Annual Plan' : 'MindFlow Semester Plan',
+              price: plan === 'yearly' ? 299 : 39,
+              quantity: 1
+            }]
+          });
+        }
+
         // 显示成功提示
         alert(`🎉 支付成功!${plan === 'yearly' ? '年度版' : '学期版'}会员已开通,开始使用吧!`);
         // 清掉 query,防止刷新重复

@@ -88,8 +88,35 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       ? (cookieLang as Lang)
       : langFromCountry(country);
 
+  // GA4 Measurement ID(从 Vercel env 读)
+  const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+
   return (
     <html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+      <head>
+        {/* Google Analytics 4 — 只在老板配了 ID 时加载 */}
+        {GA_MEASUREMENT_ID && (
+          <>
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_MEASUREMENT_ID}', {
+                    page_path: window.location.pathname,
+                    send_page_view: true
+                  });
+                `
+              }}
+            />
+          </>
+        )}
+      </head>
       <body>
         <LangProvider lang={lang}>
           {/* 顶部 global navbar(每个页面都有)+ 嵌入语言切换器 */}

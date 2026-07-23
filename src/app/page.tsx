@@ -15,6 +15,49 @@ export default function HomePage() {
     <main className="min-h-screen bg-white">
       {/* 顶部导航已移到 layout.tsx(全局 navbar + LangSwitcher) */}
 
+      {/* ===== A/B 候选版本(老板选了用哪个,我删其他) ===== */}
+      <section className="py-12 bg-amber-50 border-y border-amber-200">
+        <div className="max-w-4xl mx-auto px-6">
+          <p className="text-center text-sm text-amber-900 font-semibold mb-6">
+            🎯 老板在选的 3 个 Hero 备选(等老板定一个,我把另外两个删掉)
+          </p>
+          <div className="grid md:grid-cols-3 gap-4">
+            {/* V1: 当前版本 "让知识主动适应你" */}
+            <div className="bg-white p-5 rounded-xl border-2 border-amber-400">
+              <p className="text-xs font-bold text-amber-700 mb-2">版本 1(当前)</p>
+              <h3 className="text-lg font-bold text-gray-900 leading-snug mb-2">
+                {t('home.heroTitle1')}<br />
+                <span className="text-primary-600">{t('home.heroTitle2')}</span>
+              </h3>
+              <p className="text-xs text-gray-600 mb-3">{t('home.heroSubline')}</p>
+              <span className="text-xs text-primary-600 font-semibold">[{t('home.ctaPrimary')}]</span>
+            </div>
+
+            {/* V2: 美国/英国(欧美) */}
+            <div className="bg-white p-5 rounded-xl border border-gray-200">
+              <p className="text-xs font-bold text-gray-700 mb-2">版本 2 · 欧美市场</p>
+              <h3 className="text-lg font-bold text-gray-900 leading-snug mb-2">
+                {t('home.heroV2Title1')}<br />
+                <span className="text-primary-600">{t('home.heroV2Title2')}</span>
+              </h3>
+              <p className="text-xs text-gray-600 mb-3">{t('home.heroV2Subline')}</p>
+              <span className="text-xs text-primary-600 font-semibold">[{t('home.heroV2Cta')}]</span>
+            </div>
+
+            {/* V3: 海外华人 */}
+            <div className="bg-white p-5 rounded-xl border border-gray-200">
+              <p className="text-xs font-bold text-gray-700 mb-2">版本 3 · 海外华人</p>
+              <h3 className="text-lg font-bold text-gray-900 leading-snug mb-2">
+                {t('home.heroV3Title1')}<br />
+                <span className="text-primary-600">{t('home.heroV3Title2')}</span>
+              </h3>
+              <p className="text-xs text-gray-600 mb-3">{t('home.heroV3Subline')}</p>
+              <span className="text-xs text-primary-600 font-semibold">[{t('home.heroV3Cta')}]</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== Hero ===== */}
       <section className="bg-gradient-to-br from-primary-50 via-white to-emerald-50 py-20 md:py-24">
         <div className="max-w-4xl mx-auto px-6 text-center">

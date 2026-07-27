@@ -10,7 +10,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang';
 export const metadata: Metadata = {
   title: 'MindFlow — Let knowledge adapt to you',
   description:
-    'AI study assistant for college students. Upload a PDF or PPT, get structured notes, a mind map, flashcards, and AI Q&A in 30 seconds. Free 5 notes per month, no credit card.',
+    'AI study assistant for college students. Upload a PDF or PPT, get structured notes, a mind map, flashcards, and AI Q&A in 1 minute. Free 5 notes per month, no credit card.',
   keywords: [
     'AI note taking',
     'PDF to notes',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: 'MindFlow',
     title: 'MindFlow — Let knowledge adapt to you',
     description:
-      'AI study assistant for college students. Upload a PDF, get 4 ready-to-study things in 30 seconds. Free 5 notes per month.',
+      'AI study assistant for college students. Upload a PDF, get 4 ready-to-study things in 1 minute. Free 5 notes per month.',
     images: [
       {
         url: '/og-image.svg',

@@ -421,7 +421,7 @@ export default function UploadPage() {
                 </div>
 
                 <p className="text-xs text-gray-400 mt-4 text-center">
-                  💡 3 个 AI 任务并发执行,通常 20-30 秒完成
+                  💡 3 个 AI 任务并发执行,通常 1 分钟左右完成
                 </p>
               </div>
             )}

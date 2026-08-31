@@ -247,9 +247,9 @@ export default function UploadPage() {
       // 显示剩余免费次数(只有未付费用户才看)
       const remaining = getRemainingFree();
       if (remaining > 0 && remaining <= 2) {
-        sessionStorage.setItem('getmind_quota_warning', `还剩 ${remaining} 次免费(终身),之后需要订阅 ¥39/月`);
+        sessionStorage.setItem('getmind_quota_warning', `还剩 ${remaining} 次免费(终身),之后需要订阅 $4.99/月(一杯奶茶钱)`);
       } else if (remaining === 0) {
-        sessionStorage.setItem('getmind_quota_warning', '免费试用已用完(终身 3 次),订阅学期版 ¥39/月 无限用');
+        sessionStorage.setItem('getmind_quota_warning', '免费试用已用完(终身 3 次),订阅学期版 $4.99/月 无限用');
       }
       router.push(`/note?id=${id}`);
 
@@ -371,7 +371,7 @@ export default function UploadPage() {
               </a>
               {!quotaInfo.isPaid && (
                 <>
-                  <a href="/pricing" className="text-xs underline">升级 ¥39/月</a>
+                  <a href="/pricing" className="text-xs underline">升级 $4.99/月</a>
                   <span className="text-xs text-gray-400">·</span>
                   <span className="text-xs text-gray-500">下载需订阅</span>
                 </>

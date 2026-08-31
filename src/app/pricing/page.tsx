@@ -72,44 +72,11 @@ function PricingPage() {
         t('pricing.planYearF1'),
         t('pricing.planYearF2'),
         t('pricing.planYearF3'),
-        t('pricing.planYearF4')
+        t('pricing.planYearF4'),
+        t('pricing.planYearF5')
       ],
       cta: t('pricing.subscribe'),
       isPaid: true
-    },
-    {
-      key: 'student_month',
-      name: t('pricing.planStudentName'),
-      price: t('pricing.planStudentPrice'),
-      period: t('pricing.planStudentPeriod'),
-      highlight: false,
-      badge: t('pricing.planStudentHot'),
-      features: [
-        t('pricing.planStudentF1'),
-        t('pricing.planStudentF2'),
-        t('pricing.planStudentF3'),
-        t('pricing.planStudentF4')
-      ],
-      cta: t('pricing.planStudentCta'),
-      isPaid: true,
-      comingSoon: true
-    },
-    {
-      key: 'lifetime',
-      name: t('pricing.planLifetimeName'),
-      price: t('pricing.planLifetimePrice'),
-      period: t('pricing.planLifetimePeriod'),
-      highlight: false,
-      badge: t('pricing.planLifetimeHot'),
-      features: [
-        t('pricing.planLifetimeF1'),
-        t('pricing.planLifetimeF2'),
-        t('pricing.planLifetimeF3'),
-        t('pricing.planLifetimeF4')
-      ],
-      cta: t('pricing.planLifetimeCta'),
-      isPaid: true,
-      comingSoon: true
     }
   ];
   const [error, setError] = useState<string>('');
@@ -323,13 +290,10 @@ function PricingPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">定价方案</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-3">{t('pricing.pricingTitle') || '定价方案'}</h1>
           <p className="text-slate-600 text-lg">
-            选择适合你的学习节奏,按需付费
+            {t('pricing.subtitle')}
           </p>
-          <div className="mt-4 inline-block bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 text-orange-800 text-sm font-medium px-4 py-2 rounded-full">
-            🎉 {t('pricing.earlyBirdBanner')}
-          </div>
         </div>
 
         {/* 支付方式切换 */}
@@ -385,7 +349,7 @@ function PricingPage() {
           </div>
         )}
 
-        <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           {PLANS.map((p) => (
             <div
               key={p.key}
@@ -400,9 +364,9 @@ function PricingPage() {
                   最受欢迎
                 </div>
               )}
-              {p.badge && !p.highlight && (
+              {(p as any).badge && !p.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                  {p.badge}
+                  {(p as any).badge}
                 </div>
               )}
               {p.saveHint && (

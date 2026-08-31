@@ -169,7 +169,7 @@ function NotePageInner() {
       // 关掉下拉,弹一个确认,跳 /pricing
       setExportOpen(false);
       if (typeof window !== 'undefined' &&
-        window.confirm('下载需要订阅学期版(¥39/月)或年度版(¥299/年),复制为 Markdown 是免费的。\n\n去订阅页看看?')
+        window.confirm('下载需要订阅学期版($4.99/月,一杯奶茶钱)或年度版($39/年),复制为 Markdown 是免费的。\n\n去订阅页看看?')
       ) {
         router.push('/pricing?reason=download_gate');
       }
@@ -196,7 +196,7 @@ function NotePageInner() {
       // 同上:未付费 → 弹确认
       setExportOpen(false);
       if (typeof window !== 'undefined' &&
-        window.confirm('下载 PDF 需要订阅学期版(¥39/月)或年度版(¥299/年)。\n\n去订阅页看看?')
+        window.confirm('下载 PDF 需要订阅学期版($4.99/月,一杯奶茶钱)或年度版($39/年)。\n\n去订阅页看看?')
       ) {
         router.push('/pricing?reason=download_gate');
       }

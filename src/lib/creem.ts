@@ -25,6 +25,9 @@ export const CREEM_PRODUCT_MONTHLY = process.env.CREEM_PRODUCT_MONTHLY || '';
 export const CREEM_PRODUCT_YEARLY = process.env.CREEM_PRODUCT_YEARLY || '';
 
 // 价格档(美元,带小数点)
+// 老板 8-31 改价:降低门槛,让用户没付费压力
+// 之前: $39/月 + $299/年(老用户已经按这个付)
+// 现在: $4.99/月 + $39/年(降 87%)
 export const CREEM_PLANS: Record<
   string,
   { key: string; productId: string; name: string; amount: number; days: number }
@@ -32,15 +35,15 @@ export const CREEM_PLANS: Record<
   monthly: {
     key: 'monthly',
     productId: CREEM_PRODUCT_MONTHLY,
-    name: 'MindFlow 学习计划 (Monthly)',
-    amount: 39, // USD
+    name: 'MindFlow Monthly Plan',
+    amount: 4.99, // USD - 一杯奶茶钱
     days: 30
   },
   yearly: {
     key: 'yearly',
     productId: CREEM_PRODUCT_YEARLY,
     name: 'MindFlow Annual Plan',
-    amount: 299, // USD (海外用户)
+    amount: 39, // USD - 年付立省 35%(相当于 $3.25/月)
     days: 365
   }
 };

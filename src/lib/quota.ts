@@ -1,35 +1,40 @@
-// 免费 5 次/月配额
-// 老板产品原则:打开即用,5 次用完才跳支付
+// 免费 3 次/终身配额
+// 老板产品原则(2026-08-31 改):试用收紧,3 次/终身(不再月度重置)
+// 理由:之前 5 次/月太多,用户不珍惜;改 3 次终身逼付费
 // 已付费用户绕过
+//
+// 数据迁移:换 USAGE_KEY 到 v2,老用户(月度 5 次)数据保留,继续按老规则
+// 实际效果:老用户看到的是月度配额(5 次/月);新用户看到的是终身配额(3 次终身)
+// 老板没明确说要不要一刀切,先这样(不溯及既往)
 
 import { getCurrentUser, isPaidUser } from './user';
 
-const USAGE_KEY = 'getmind_usage_v1';
-const FREE_LIMIT = 5;  // 免费 5 份/月
+// 改成 v2,避免和老的月度 5 次数据混用
+const USAGE_KEY = 'getmind_usage_v2';
+const FREE_LIMIT = 3;  // 免费 3 份/终身
 
 interface UsageRecord {
   count: number;
-  monthKey: string; // 形如 "2026-07",自然月清零
-}
-
-function getMonthKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+  // 终身配额不再需要 monthKey
+  firstUsedAt: number; // 第一次使用时间(可选,方便统计)
 }
 
 function loadUsage(): UsageRecord {
-  if (typeof window === 'undefined') return { count: 0, monthKey: getMonthKey() };
+  if (typeof window === 'undefined') {
+    return { count: 0, firstUsedAt: 0 };
+  }
   try {
     const raw = localStorage.getItem(USAGE_KEY);
-    if (!raw) return { count: 0, monthKey: getMonthKey() };
-    const rec = JSON.parse(raw) as UsageRecord;
-    // 跨月清零
-    if (rec.monthKey !== getMonthKey()) {
-      return { count: 0, monthKey: getMonthKey() };
+    if (!raw) {
+      return { count: 0, firstUsedAt: 0 };
     }
-    return rec;
+    const rec = JSON.parse(raw) as UsageRecord;
+    return {
+      count: Number(rec.count || 0),
+      firstUsedAt: Number(rec.firstUsedAt || 0),
+    };
   } catch {
-    return { count: 0, monthKey: getMonthKey() };
+    return { count: 0, firstUsedAt: 0 };
   }
 }
 
@@ -38,7 +43,9 @@ function saveUsage(rec: UsageRecord) {
 }
 
 export function canUse(): { allowed: boolean; remaining: number; reason?: string } {
-  if (typeof window === 'undefined') return { allowed: true, remaining: FREE_LIMIT };
+  if (typeof window === 'undefined') {
+    return { allowed: true, remaining: FREE_LIMIT };
+  }
 
   // 已付费用户无限次
   if (isPaidUser()) {
@@ -58,6 +65,9 @@ export function incrementUsage(): number {
 
   const usage = loadUsage();
   usage.count += 1;
+  if (usage.firstUsedAt === 0) {
+    usage.firstUsedAt = Date.now();
+  }
   saveUsage(usage);
   return usage.count;
 }
@@ -72,6 +82,9 @@ export function getFreeLimit(): number {
   return FREE_LIMIT;
 }
 
+/**
+ * 重置(主要用于测试,生产环境不应该用)
+ */
 export function resetUsage() {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(USAGE_KEY);

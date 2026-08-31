@@ -8,6 +8,8 @@ import LoadingBar from '@/components/LoadingBar';
 import { copyMarkdown, downloadMarkdown, downloadWord, downloadPdf, buildExportMarkdown } from '@/lib/export';
 import { saveNoteToHistory } from '@/lib/history';
 import { detectLanguage, type Lang } from '@/lib/lang';
+import { isPaidUser, getCurrentUser } from '@/lib/user';
+import { useRouter } from 'next/navigation';
 
 type Flashcard = { q: string; a: string };
 type MindNode = { label: string; children?: MindNode[] };
@@ -15,6 +17,7 @@ type Term = { term: string; translation: string; definition: string };
 
 function NotePageInner() {
   const params = useSearchParams();
+  const router = useRouter();
   const id = params.get('id');
 
   // 从 sessionStorage 读数据(避免 URL 过长触发 431)
@@ -55,6 +58,14 @@ function NotePageInner() {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [shareState, setShareState] = useState<'idle' | 'ok' | 'fail'>('idle');
   const noteRef = useRef<HTMLDivElement>(null);
+
+  // 付费状态(下载 .md / .doc / .pdf 需要订阅,复制允许免费)
+  const [isPaid, setIsPaid] = useState(false);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsPaid(isPaidUser());
+    }
+  }, []);
 
   // 翻译 + 术语(懒加载)
   const [translation, setTranslation] = useState<string | null>(null);
@@ -150,18 +161,47 @@ function NotePageInner() {
     setTimeout(() => setCopyState('idle'), 2500);
   };
 
+  // 下载前检查付费(老板产品原则:3 个文件下载都要订阅,复制免费)
+  function gateDownload(action: () => void) {
+    if (isPaid) {
+      action();
+    } else {
+      // 关掉下拉,弹一个确认,跳 /pricing
+      setExportOpen(false);
+      if (typeof window !== 'undefined' &&
+        window.confirm('下载需要订阅学期版(¥39/月)或年度版(¥299/年),复制为 Markdown 是免费的。\n\n去订阅页看看?')
+      ) {
+        router.push('/pricing?reason=download_gate');
+      }
+    }
+  }
+
   const onDownloadMd = () => {
-    downloadMarkdown(filename.replace(/\.[^.]+$/, ''), exportMd);
-    setExportOpen(false);
+    gateDownload(() => {
+      downloadMarkdown(filename.replace(/\.[^.]+$/, ''), exportMd);
+      setExportOpen(false);
+    });
   };
 
   const onDownloadWord = () => {
-    downloadWord(filename.replace(/\.[^.]+$/, ''), exportMd);
-    setExportOpen(false);
+    gateDownload(() => {
+      downloadWord(filename.replace(/\.[^.]+$/, ''), exportMd);
+      setExportOpen(false);
+    });
   };
 
   const onDownloadPdf = async () => {
     if (!noteRef.current) return;
+    if (!isPaid) {
+      // 同上:未付费 → 弹确认
+      setExportOpen(false);
+      if (typeof window !== 'undefined' &&
+        window.confirm('下载 PDF 需要订阅学期版(¥39/月)或年度版(¥299/年)。\n\n去订阅页看看?')
+      ) {
+        router.push('/pricing?reason=download_gate');
+      }
+      return;
+    }
     setPdfLoading(true);
     try {
       await downloadPdf(filename.replace(/\.[^.]+$/, ''), noteRef.current);
@@ -255,14 +295,19 @@ function NotePageInner() {
                      '复制为 Markdown'}
                   </button>
                   <button onClick={onDownloadMd} className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 text-sm">
-                    <Download className="w-4 h-4 text-gray-500" />下载 .md 文件
+                    <Download className="w-4 h-4 text-gray-500" />
+                    <span className="flex-1">下载 .md 文件</span>
+                    {!isPaid && <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-semibold">需订阅</span>}
                   </button>
                   <button onClick={onDownloadWord} className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 text-sm">
-                    <FileType className="w-4 h-4 text-gray-500" />下载 Word (.doc)
+                    <FileType className="w-4 h-4 text-gray-500" />
+                    <span className="flex-1">下载 Word (.doc)</span>
+                    {!isPaid && <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-semibold">需订阅</span>}
                   </button>
                   <button onClick={onDownloadPdf} disabled={pdfLoading} className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center gap-2 text-sm border-t disabled:opacity-50">
                     <Download className="w-4 h-4 text-gray-500" />
-                    {pdfLoading ? '生成 PDF 中...' : '下载 PDF (当前页)'}
+                    <span className="flex-1">{pdfLoading ? '导出 PDF 中…' : '下载 PDF'}</span>
+                    {!isPaid && <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded font-semibold">需订阅</span>}
                   </button>
                 </div>
               )}

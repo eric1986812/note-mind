@@ -247,9 +247,9 @@ export default function UploadPage() {
       // 显示剩余免费次数(只有未付费用户才看)
       const remaining = getRemainingFree();
       if (remaining > 0 && remaining <= 2) {
-        sessionStorage.setItem('getmind_quota_warning', `还剩 ${remaining} 次免费,之后需要订阅 ¥39/月`);
+        sessionStorage.setItem('getmind_quota_warning', `还剩 ${remaining} 次免费(终身),之后需要订阅 ¥39/月`);
       } else if (remaining === 0) {
-        sessionStorage.setItem('getmind_quota_warning', '免费试用已用完,下次需要订阅');
+        sessionStorage.setItem('getmind_quota_warning', '免费试用已用完(终身 3 次),订阅学期版 ¥39/月 无限用');
       }
       router.push(`/note?id=${id}`);
 
@@ -361,7 +361,7 @@ export default function UploadPage() {
               <span>
                 {quotaInfo.isPaid
                   ? `✅ 已订阅 ${localStorage.getItem('getmind_paid_plan') || ''} · 无限次生成`
-                  : `🆓 免费试用 · 还剩 ${quotaInfo.remaining}/${getFreeLimit()} 次`}
+                  : `🆓 免费试用 · 终身还剩 ${quotaInfo.remaining}/${getFreeLimit()} 次`}
               </span>
               {quotaInfo.userEmail && (
                 <span className="text-xs text-gray-500">{quotaInfo.userEmail}</span>
@@ -370,7 +370,11 @@ export default function UploadPage() {
                 🎁 邀请好友得 1 个月
               </a>
               {!quotaInfo.isPaid && (
-                <a href="/pricing" className="text-xs underline">升级 ¥39/月</a>
+                <>
+                  <a href="/pricing" className="text-xs underline">升级 ¥39/月</a>
+                  <span className="text-xs text-gray-400">·</span>
+                  <span className="text-xs text-gray-500">下载需订阅</span>
+                </>
               )}
             </div>
           )}

@@ -6,7 +6,7 @@ import { saveNoteToHistory } from '@/lib/history';
 import { splitIntoChunks } from '@/lib/splitter';
 import { canUse, incrementUsage, getRemainingFree, getFreeLimit, resetUsage } from '@/lib/quota';
 import { getCurrentUser, updateUserPlan } from '@/lib/user';
-import { useLang } from '../lib/lang-context';
+import { useLang } from '@/lib/lang-context';
 
 type ChunkMeta = { index: number; title: string; content: string };
 type TaskState = 'pending' | 'active' | 'done';

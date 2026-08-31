@@ -182,8 +182,8 @@
     "example3Desc": "AI 提炼考点 + 记忆卡片按艾宾浩斯曲线推,2 个月稳上考场"
   },
   "pricing": {
-    "title": "定价方案",
-    "subtitle": "永久免费版够用,付费版无限次 + 全部 P1 功能",
+    "title": "一杯奶茶钱,搞定 1 学期学习",
+    "subtitle": "$4.99/月(一杯奶茶钱) · 年付立省 35% · 7 天无理由退款",
     "currentPlan": "当前方案",
     "subscribe": "立即开通",
     "saveHint": "省 $20",
@@ -195,7 +195,7 @@
     "planFreeF2": "基础笔记生成",
     "planFreeF3": "基础思维导图",
     "planFreeF4": "8 张记忆卡片",
-    "planMonthName": "学期版",
+    "planMonthName": "月付版",
     "planMonthPrice": "$4.99",
     "planMonthPeriod": "/ 月",
     "planMonthF1": "无限次生成",
@@ -205,7 +205,7 @@
     "planMonthF5": "学习历史",
     "planMonthF6": "笔记导出(MD / DOC / PDF)",
     "planMonthF7": "每月 $4.99,一杯奶茶的钱,期末/考研不慌",
-    "planYearName": "年度版",
+    "planYearName": "年付版",
     "planYearPrice": "$39",
     "planYearPeriod": "/ 年(省 35%)",
     "planYearF1": "学期版全部功能",
@@ -225,7 +225,7 @@
     "submitRegister": "注册 + 继续",
     "submitLogin": "登录 + 继续",
     "freeLimitReasonTitle": "本月免费次数已用完",
-    "freeLimitReasonSub": "升级到学期版 $39/月 无限用,或注册账号每月重置 5 次免费额度",
+    "freeLimitReasonSub": "升级到月付版 $4.99/月 无限用,或注册账号重置 3 份终身免费额度",
     "freeLimitPlanTitle": "永久免费版",
     "freeLimitPlanDesc": "继续终身 3 份免费额度",
     "freeLimitCta": "免费继续用",
@@ -250,7 +250,11 @@
     "monthPlan": "学期版",
     "yearPlan": "年度版",
     "featureHighlight": "🔥 推荐",
-    "planYearF5": "每月仅 $3.25,比月付立省 35%"
+    "planYearF5": "每月仅 $3.25,比月付立省 35%",
+    "planFreeCta": "免费开始",
+    "planMonthHot": "🔥 一杯奶茶钱",
+    "planMonthCta": "立即订阅",
+    "planYearCta": "立即订阅"
   },
   "invite": {
     "title": "邀请好友,各得 1 个月会员",

@@ -182,8 +182,8 @@
     "example3Desc": "AI pulls out exam points + flashcards on the Ebbinghaus curve."
   },
   "pricing": {
-    "title": "Pricing",
-    "subtitle": "Free plan is enough. Paid plan: unlimited + all P1 features.",
+    "title": "Less than a coffee — your whole semester",
+    "subtitle": "$4.99/month (less than a coffee) · Save 35% on annual · 7-day refund",
     "currentPlan": "Current plan",
     "subscribe": "Subscribe now",
     "saveHint": "Save $20",
@@ -195,7 +195,7 @@
     "planFreeF2": "Basic note generation",
     "planFreeF3": "Basic mind map",
     "planFreeF4": "8 flashcards",
-    "planMonthName": "Semester",
+    "planMonthName": "Monthly",
     "planMonthPrice": "$4.99",
     "planMonthPeriod": "/ month",
     "planMonthF1": "Unlimited generations",
@@ -225,7 +225,7 @@
     "submitRegister": "Sign up + continue",
     "submitLogin": "Sign in + continue",
     "freeLimitReasonTitle": "You've used your free notes for this month",
-    "freeLimitReasonSub": "Upgrade to Semester plan ($39/mo) for unlimited use, or sign up to reset 3 free notes (lifetime).",
+    "freeLimitReasonSub": "Upgrade to Monthly for $4.99/mo (unlimited), or sign up to get 3 free notes (lifetime)",
     "freeLimitPlanTitle": "Free plan",
     "freeLimitPlanDesc": "Continue with 3 free notes (lifetime)",
     "freeLimitCta": "Keep using free",
@@ -250,7 +250,11 @@
     "monthPlan": "Semester",
     "yearPlan": "Annual",
     "featureHighlight": "🔥 Recommended",
-    "planYearF5": "Only $3.25/mo — save 35% vs monthly"
+    "planYearF5": "Only $3.25/mo — save 35% vs monthly",
+    "planFreeCta": "Start free",
+    "planMonthHot": "🔥 Less than a coffee",
+    "planMonthCta": "Subscribe now",
+    "planYearCta": "Subscribe now"
   },
   "invite": {
     "title": "Invite a friend, both get 1 month free",

@@ -1,11 +1,12 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Upload, Loader2, Sparkles, Check, FileText, Network, Layers, Save } from 'lucide-react';
+import { Upload, Loader2, Sparkles, Check, FileText, Network, Layers, Save, GraduationCap, Globe, BookOpen } from 'lucide-react';
 import { saveNoteToHistory } from '@/lib/history';
 import { splitIntoChunks } from '@/lib/splitter';
 import { canUse, incrementUsage, getRemainingFree, getFreeLimit, resetUsage } from '@/lib/quota';
 import { getCurrentUser, updateUserPlan } from '@/lib/user';
+import { useLang } from '../lib/lang-context';
 
 type ChunkMeta = { index: number; title: string; content: string };
 type TaskState = 'pending' | 'active' | 'done';
@@ -22,6 +23,7 @@ type Task = {
 export default function UploadPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useLang();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [progressText, setProgressText] = useState('');
@@ -319,6 +321,32 @@ export default function UploadPage() {
       <div className="max-w-2xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold text-gray-900 mb-3">上传你的学习资料</h1>
           <p className="text-gray-600 mb-2">支持 PPT、PDF、Word、<strong>图片拍照/截图</strong>。最大 20MB。</p>
+
+        {/* 3 个常见场景引导(降低跳出率) */}
+        {!chunks && (
+          <div className="mb-6">
+            <p className="text-sm font-semibold text-gray-700 mb-3">
+              {t('upload.examplesTitle')}
+            </p>
+            <div className="grid sm:grid-cols-3 gap-3">
+              <div className="bg-white p-4 rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition">
+                <div className="text-2xl mb-1.5">🎓</div>
+                <p className="text-sm font-bold text-gray-900 mb-1">{t('upload.example1Title')}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{t('upload.example1Desc')}</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition">
+                <div className="text-2xl mb-1.5">🌏</div>
+                <p className="text-sm font-bold text-gray-900 mb-1">{t('upload.example2Title')}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{t('upload.example2Desc')}</p>
+              </div>
+              <div className="bg-white p-4 rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition">
+                <div className="text-2xl mb-1.5">📚</div>
+                <p className="text-sm font-bold text-gray-900 mb-1">{t('upload.example3Title')}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{t('upload.example3Desc')}</p>
+              </div>
+            </div>
+          </div>
+        )}
           {/* 顶部状态条 */}
           {quotaInfo && (
             <div className={`mb-6 px-4 py-2 rounded-lg text-sm flex items-center justify-between ${

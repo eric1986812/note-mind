@@ -1,15 +1,53 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import {
   Brain, FileText, Network, Layers, MessageCircle, Sparkles,
   Upload, CheckCircle2, X, Clock, BookOpen, GraduationCap, Globe,
-  Shield, Zap, Users, ArrowRight
+  Shield, Zap, Users, ArrowRight, Mail, Bell
 } from 'lucide-react';
 import { useLang } from '../lib/lang-context';
 
 export default function HomePage() {
   const { t } = useLang();
+  const [email, setEmail] = useState('');
+  const [emailStatus, setEmailStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [emailError, setEmailError] = useState('');
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) {
+      setEmailStatus('error');
+      setEmailError(t('home.emailCollectErrorEmpty'));
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailStatus('error');
+      setEmailError(t('home.emailCollectErrorFormat'));
+      return;
+    }
+    setEmailStatus('loading');
+    setEmailError('');
+    try {
+      const res = await fetch('/api/email/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'home_footer' }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setEmailStatus('success');
+        setEmail('');
+      } else {
+        setEmailStatus('error');
+        setEmailError(data.error || t('home.emailCollectErrorServer'));
+      }
+    } catch {
+      setEmailStatus('error');
+      setEmailError(t('home.emailCollectErrorServer'));
+    }
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -244,6 +282,53 @@ export default function HomePage() {
           <Link href="/upload" className="bg-white text-primary-600 px-10 py-5 rounded-xl text-xl font-bold hover:bg-gray-50 shadow-xl inline-flex items-center justify-center gap-2">
             {t('home.ctaBottomButton')} <ArrowRight className="w-6 h-6" />
           </Link>
+        </div>
+      </section>
+
+      {/* ===== Email 收集(留住流失用户) ===== */}
+      <section className="py-16 bg-gradient-to-br from-amber-50 to-orange-50 border-y border-amber-100">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-800 text-sm font-semibold px-3 py-1 rounded-full mb-4">
+            <Bell className="w-3.5 h-3.5" /> 新功能 / 早鸟价 通知
+          </div>
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+            {t('home.emailCollectTitle')}
+          </h2>
+          <p className="text-gray-600 mb-6 leading-relaxed">{t('home.emailCollectSub')}</p>
+
+          {emailStatus === 'success' ? (
+            <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 text-base font-medium px-6 py-3 rounded-xl">
+              ✅ {t('home.emailCollectSuccess')}
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} className="max-w-md mx-auto">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (emailStatus === 'error') setEmailStatus('idle');
+                  }}
+                  placeholder={t('home.emailCollectPlaceholder')}
+                  className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none text-base"
+                  disabled={emailStatus === 'loading'}
+                />
+                <button
+                  type="submit"
+                  disabled={emailStatus === 'loading'}
+                  className="bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5 whitespace-nowrap"
+                >
+                  <Mail className="w-4 h-4" />
+                  {emailStatus === 'loading' ? '...' : t('home.emailCollectBtn')}
+                </button>
+              </div>
+              {emailStatus === 'error' && emailError && (
+                <p className="mt-2 text-sm text-red-600">{emailError}</p>
+              )}
+            </form>
+          )}
+          <p className="mt-3 text-xs text-gray-400">📩 老板亲自发的,不是机器群发</p>
         </div>
       </section>
 

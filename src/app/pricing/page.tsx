@@ -76,6 +76,40 @@ function PricingPage() {
       ],
       cta: t('pricing.subscribe'),
       isPaid: true
+    },
+    {
+      key: 'student_month',
+      name: t('pricing.planStudentName'),
+      price: t('pricing.planStudentPrice'),
+      period: t('pricing.planStudentPeriod'),
+      highlight: false,
+      badge: t('pricing.planStudentHot'),
+      features: [
+        t('pricing.planStudentF1'),
+        t('pricing.planStudentF2'),
+        t('pricing.planStudentF3'),
+        t('pricing.planStudentF4')
+      ],
+      cta: t('pricing.planStudentCta'),
+      isPaid: true,
+      comingSoon: true
+    },
+    {
+      key: 'lifetime',
+      name: t('pricing.planLifetimeName'),
+      price: t('pricing.planLifetimePrice'),
+      period: t('pricing.planLifetimePeriod'),
+      highlight: false,
+      badge: t('pricing.planLifetimeHot'),
+      features: [
+        t('pricing.planLifetimeF1'),
+        t('pricing.planLifetimeF2'),
+        t('pricing.planLifetimeF3'),
+        t('pricing.planLifetimeF4')
+      ],
+      cta: t('pricing.planLifetimeCta'),
+      isPaid: true,
+      comingSoon: true
     }
   ];
   const [error, setError] = useState<string>('');
@@ -293,6 +327,9 @@ function PricingPage() {
           <p className="text-slate-600 text-lg">
             选择适合你的学习节奏,按需付费
           </p>
+          <div className="mt-4 inline-block bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200 text-orange-800 text-sm font-medium px-4 py-2 rounded-full">
+            🎉 {t('pricing.earlyBirdBanner')}
+          </div>
         </div>
 
         {/* 支付方式切换 */}
@@ -348,7 +385,7 @@ function PricingPage() {
           </div>
         )}
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 gap-6">
           {PLANS.map((p) => (
             <div
               key={p.key}
@@ -361,6 +398,11 @@ function PricingPage() {
               {p.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
                   最受欢迎
+                </div>
+              )}
+              {p.badge && !p.highlight && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+                  {p.badge}
                 </div>
               )}
               {p.saveHint && (
@@ -392,9 +434,11 @@ function PricingPage() {
                     paymentMethod === 'creem' ? handleCreem(p.key) : handleWxPay(p.key)
                   )
                 }
-                disabled={loading === p.key}
+                disabled={loading === p.key || (p as any).comingSoon}
                 className={`w-full py-3 px-4 rounded-lg font-medium transition ${
-                  p.highlight
+                  (p as any).comingSoon
+                    ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
+                    : p.highlight
                     ? 'bg-blue-600 text-white hover:bg-blue-700'
                     : 'bg-slate-900 text-white hover:bg-slate-800'
                 } ${loading === p.key ? 'opacity-50 cursor-not-allowed' : ''}`}

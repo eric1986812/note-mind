@@ -290,7 +290,7 @@ function PricingPage() {
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white py-16 px-4">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-3">{t('pricing.pricingTitle') || '定价方案'}</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-3">{t('pricing.title')}</h1>
           <p className="text-slate-600 text-lg">
             {t('pricing.subtitle')}
           </p>

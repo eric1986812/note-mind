@@ -28,3 +28,8 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# test files
+test_payment.js
+*.test.js
+playwright-tmp/

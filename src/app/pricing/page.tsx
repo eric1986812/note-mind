@@ -1,10 +1,6 @@
-// 定价页面 - 国内微信支付 + 海外 Creem 双轨
-// 老板用 mindflow.wang/pricing 打开
-//
-// 双策略:
-// 1. 微信支付(Native 扫码): 等 ICP 备案完成才能上线(JSAPI 也一样要备案)
-// 2. Creem: 绕过备案,立刻能收海外华人信用卡
-// 国内用户暂时看到 Creem,等备案通过后切回微信支付
+// 定价页面 - 暂时只走 Creem(微信支付等 ICP 备案后再启用)
+// 老板 9-1 决策:ICP 备案没完成前,不显示微信支付选项,避免用户困惑
+// ICP 备案后,加回 payMethod 切换 + handleWxPay 函数已经实现好,只需 uncomment
 
 'use client';
 
@@ -81,6 +77,8 @@ function PricingPage() {
   ];
   const [error, setError] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<'wxpay' | 'creem'>('creem');
+  // 老板 9-1 决定:暂时只走 Creem,微信支付等 ICP 备案后再加回
+  // paymentMethod 现在永远 = 'creem',但保留 state 和 setPaymentMethod 以便将来恢复
 
   // 注册/登录弹窗(老板产品原则:付前要注册)
   const [authModal, setAuthModal] = useState<{ mode: 'register' | 'login'; reason?: string } | null>(null);
@@ -315,7 +313,7 @@ function PricingPage() {
           </p>
         </div>
 
-        {/* 支付方式切换 */}
+        {/* 支付方式切换(老板 9-1 暂时隐藏:ICP 备案后加回)
         <div className="flex justify-center mb-8">
           <div className="inline-flex bg-slate-100 rounded-lg p-1">
             <button
@@ -340,6 +338,7 @@ function PricingPage() {
             </button>
           </div>
         </div>
+        */}
 
         {/* 已登录用户显示 */}
         {currentUser && (
@@ -349,16 +348,6 @@ function PricingPage() {
               onClick={() => { logout(); setCurrentUser(null); }}
               className="text-xs text-gray-500 hover:text-gray-700 underline"
             >退出</button>
-          </div>
-        )}
-
-        {paymentMethod === 'wxpay' && (
-          <div className="max-w-2xl mx-auto mb-6 bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm">
-            ⚠️ 微信支付需要域名 ICP 备案,mindflow.wang 暂时不能直接收款。
-            <br />
-            ✅ 我们已启动备案流程,预计 3-15 天通过。通过后立刻切换。
-            <br />
-            🎯 现在推荐使用 <strong>Creem(海外华人通道)</strong>,任何信用卡都能付,即时开通。
           </div>
         )}
 
@@ -414,7 +403,8 @@ function PricingPage() {
               <button
                 onClick={() =>
                   ensureAuthed(() =>
-                    paymentMethod === 'creem' ? handleCreem(p.key) : handleWxPay(p.key)
+                    // 老板 9-1 决策:暂时只走 Creem,微信支付等 ICP 备案后再加回
+                    handleCreem(p.key)
                   )
                 }
                 disabled={loading === p.key || (p as any).comingSoon}
@@ -433,17 +423,9 @@ function PricingPage() {
         </div>
 
         <div className="mt-12 text-center text-sm text-slate-500">
-          {paymentMethod === 'creem' ? (
-            <>
-              <p>支付由 Creem.io 处理 · 支持 Visa / MasterCard / American Express — Payments by Creem.io · Visa / MasterCard / Amex supported</p>
-              <p className="mt-2">任何国家都可以付款,即时开通</p>
-            </>
-          ) : (
-            <>
-              <p>支付由微信支付担保 · 7 天无理由退款 — Powered by WeChat Pay · 7-day refund</p>
-              <p className="mt-2">ICP 备案完成后自动切换到自动拉起支付</p>
-            </>
-          )}
+          {/* 老板 9-1:暂时只走 Creem(微信支付等 ICP 备案后启用) */}
+          <p>支付由 Creem.io 处理 · 支持 Visa / MasterCard / American Express — Payments by Creem.io · Visa / MasterCard / Amex supported</p>
+          <p className="mt-2">任何国家都可以付款,即时开通</p>
         </div>
       </div>
 

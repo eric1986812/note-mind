@@ -138,7 +138,6 @@ function PricingPage() {
   async function handleAuth() {
     if (authMode === 'register') {
       const res = await register(authEmail, authPassword, authName);
-      console.log('[handleAuth] register result:', JSON.stringify(res));
       if (res.ok) {
         // 绑定邀请关系(新注册用户如果 ?ref= 开过来)
         try {

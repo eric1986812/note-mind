@@ -236,7 +236,9 @@ function PricingPage() {
 
     try {
       // 必须传 customerEmail(用户已登录),这样 webhook 来时能识别是谁
-      const userEmail = currentUser?.email || '';
+      // 注意:用 getCurrentUser() 直接读 localStorage,不要用 currentUser state(setTimeout 内可能未更新)
+      const user = getCurrentUser();
+      const userEmail = user?.email || '';
       const res = await fetch('/api/creem/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

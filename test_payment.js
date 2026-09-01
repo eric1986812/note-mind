@@ -27,7 +27,7 @@ const TEST_NAME = 'MindFlow Test';
 
   // ===== Step 1: 访问 /pricing =====
   console.log('--- Step 1: 访问 /pricing ---');
-  await page.goto('https://mindflow.wang/pricing', { waitUntil: 'networkidle', timeout: 30000 });
+  await page.goto('https://mindflow.wang/pricing?lang=zh', { waitUntil: 'networkidle', timeout: 30000 });
   await page.waitForTimeout(2000);
   await page.screenshot({ path: '/tmp/test_01_pricing.png', fullPage: true });
 

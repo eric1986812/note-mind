@@ -8,7 +8,7 @@
 
 'use client';
 
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { register, login, getCurrentUser, logout } from '@/lib/user';
 import { useLang } from '@/lib/lang-context';
@@ -132,7 +132,8 @@ function PricingPage() {
   }, [searchParams]);
 
   // 注册/登录成功后要继续的动作(老板 9-1 修:之前注册后用户得再点一次,UX 差)
-  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+  // 用 ref 不用 state:state 在 handleAuth 闭包中是旧值,ref 是最新值
+  const pendingActionRef = useRef<(() => void) | null>(null);
 
   async function handleAuth() {
     if (authMode === 'register') {
@@ -150,9 +151,9 @@ function PricingPage() {
         setCurrentUser(getCurrentUser());
         setAuthError('');
         // 自动继续上次的操作(老板 UX 改进:不要让用户再点)
-        if (pendingAction) {
-          const a = pendingAction;
-          setPendingAction(null);
+        if (pendingActionRef.current) {
+          const a = pendingActionRef.current;
+          pendingActionRef.current = null;
           // 用 setTimeout 让 modal 关闭动画播完再跳转
           setTimeout(() => a(), 100);
         }
@@ -165,9 +166,9 @@ function PricingPage() {
         setAuthModal(null);
         setCurrentUser(getCurrentUser());
         setAuthError('');
-        if (pendingAction) {
-          const a = pendingAction;
-          setPendingAction(null);
+        if (pendingActionRef.current) {
+          const a = pendingActionRef.current;
+          pendingActionRef.current = null;
           setTimeout(() => a(), 100);
         }
       } else {
@@ -183,7 +184,7 @@ function PricingPage() {
     } else {
       setAuthMode('register');
       setAuthModal({ mode: 'register' });
-      setPendingAction(() => action); // 注册成功后自动继续
+      pendingActionRef.current = action; // 注册成功后自动继续
     }
   }
 

@@ -131,6 +131,9 @@ function PricingPage() {
     }
   }, [searchParams]);
 
+  // 注册/登录成功后要继续的动作(老板 9-1 修:之前注册后用户得再点一次,UX 差)
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
+
   async function handleAuth() {
     if (authMode === 'register') {
       const res = await register(authEmail, authPassword, authName);
@@ -146,6 +149,13 @@ function PricingPage() {
         setAuthModal(null);
         setCurrentUser(getCurrentUser());
         setAuthError('');
+        // 自动继续上次的操作(老板 UX 改进:不要让用户再点)
+        if (pendingAction) {
+          const a = pendingAction;
+          setPendingAction(null);
+          // 用 setTimeout 让 modal 关闭动画播完再跳转
+          setTimeout(() => a(), 100);
+        }
       } else {
         setAuthError(res.error || '注册失败');
       }
@@ -155,6 +165,11 @@ function PricingPage() {
         setAuthModal(null);
         setCurrentUser(getCurrentUser());
         setAuthError('');
+        if (pendingAction) {
+          const a = pendingAction;
+          setPendingAction(null);
+          setTimeout(() => a(), 100);
+        }
       } else {
         setAuthError(res.error || '登录失败');
       }
@@ -168,6 +183,7 @@ function PricingPage() {
     } else {
       setAuthMode('register');
       setAuthModal({ mode: 'register' });
+      setPendingAction(() => action); // 注册成功后自动继续
     }
   }
 

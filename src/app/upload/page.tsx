@@ -413,7 +413,7 @@ export default function UploadPage() {
               {uploading ? (
                 <><Loader2 className="w-5 h-5 animate-spin" />{progressText}</>
               ) : (
-                <><Sparkles className="w-5 h-5" />开始 AI 处理</>
+                <><Sparkles className="w-5 h-5" />{t('upload.startBtn')}</>
               )}
             </button>
 

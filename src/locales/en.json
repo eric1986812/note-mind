@@ -318,7 +318,16 @@
     "planMonthHot": "🔥 Most popular",
     "planMonthCta": "Subscribe",
     "planYearCta": "Subscribe",
-    "pricingSub": "$4.99/month · Save $20 on annual · 7-day no-questions-asked refund"
+    "pricingSub": "$4.99/month · Save $20 on annual · 7-day no-questions-asked refund",
+    "wxpayTitle": "Scan to pay with WeChat",
+    "wxpayAmount": "Amount due",
+    "wxpayScanning": "Scan with WeChat",
+    "wxpayExpiresIn": "Payment link expires in",
+    "wxpayExpired": "Payment link expired. Please re-subscribe.",
+    "wxpayFailed": "Payment failed:",
+    "wxpayAutoRedirect": "Auto-redirect in 3s",
+    "wxpayCancel": "Cancel",
+    "wxpayPayNow": "I've paid — refresh status"
   },
   "invite": {
     "title": "Invite a friend, both get 1 month free",

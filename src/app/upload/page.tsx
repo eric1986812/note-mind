@@ -436,19 +436,19 @@ export default function UploadPage() {
 
                 {/* 分步状态 */}
                 <div className="mt-5 space-y-2">
-                  {tasks.map(t => (
-                    <div key={t.key} className="flex items-center gap-2 text-sm">
+                  {tasks.map(task => (
+                    <div key={task.key} className="flex items-center gap-2 text-sm">
                       <div className="w-5 flex-shrink-0">
-                        {t.state === 'done' ? <Check className="w-4 h-4 text-primary-600" /> :
-                         t.state === 'active' ? <Loader2 className="w-4 h-4 animate-spin text-amber-600" /> :
+                        {task.state === 'done' ? <Check className="w-4 h-4 text-primary-600" /> :
+                         task.state === 'active' ? <Loader2 className="w-4 h-4 animate-spin text-amber-600" /> :
                          <span className="w-4 h-4 rounded-full border-2 border-gray-300 block" />}
                       </div>
-                      <t.icon className={`w-4 h-4 flex-shrink-0 ${t.state === 'pending' ? 'text-gray-300' : 'text-primary-600'}`} />
-                      <span className={`flex-1 ${t.state === 'pending' ? 'text-gray-400' : t.state === 'done' ? 'text-primary-700' : 'text-gray-800 font-medium'}`}>
-                        {t.key === 'parse' ? t('upload.taskParse') : t.key === 'ai' ? t('upload.taskAi') : t.key === 'save' ? t('upload.taskSave') : t.label}
+                      <task.icon className={`w-4 h-4 flex-shrink-0 ${task.state === 'pending' ? 'text-gray-300' : 'text-primary-600'}`} />
+                      <span className={`flex-1 ${task.state === 'pending' ? 'text-gray-400' : task.state === 'done' ? 'text-primary-700' : 'text-gray-800 font-medium'}`}>
+                        {task.key === 'parse' ? t('upload.taskParse') : task.key === 'ai' ? t('upload.taskAi') : task.key === 'save' ? t('upload.taskSave') : task.label}
                       </span>
-                      <span className={`text-xs tabular-nums ${t.state === 'pending' ? 'text-gray-300' : 'text-gray-600'}`}>
-                        {Math.floor(t.progress)}%
+                      <span className={`text-xs tabular-nums ${task.state === 'pending' ? 'text-gray-300' : 'text-gray-600'}`}>
+                        {Math.floor(task.progress)}%
                       </span>
                     </div>
                   ))}

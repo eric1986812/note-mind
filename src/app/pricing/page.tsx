@@ -12,7 +12,7 @@ import { useLang } from '@/lib/lang-context';
 export default function PricingPageWrapper() {
   // Next.js 14 + useSearchParams 必须包 Suspense(避免 build 预渲染失败)
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-500">加载中...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-500">Loading...</div>}>
       <PricingPage />
     </Suspense>
   );
@@ -122,7 +122,8 @@ function PricingPage() {
       localStorage.setItem('getmind_paid_plan', paid);
       localStorage.setItem('getmind_paid_at', String(Date.now()));
       localStorage.setItem('getmind_paid_expire', String(Date.now() + 30 * 24 * 60 * 60 * 1000));
-      alert('支付成功!正在跳转...');
+      const successMsg = lang === 'zh' ? '支付成功!正在跳转...' : 'Payment successful! Redirecting...';
+      alert(successMsg);
       setTimeout(() => {
         window.location.href = '/upload';
       }, 1500);
@@ -202,8 +203,8 @@ function PricingPage() {
       const data = await res.json();
       if (!res.ok || !data.codeUrl) {
         setError(
-          '微信下单失败: ' +
-            (data.error || '未知错误') +
+          (lang === 'zh' ? '微信下单失败: ' : 'WeChat order failed: ') +
+            (data.error || (lang === 'zh' ? '未知错误' : 'Unknown error')) +
             (data.detail ? ' / ' + JSON.stringify(data.detail).slice(0, 200) : '')
         );
         setLoading('');
@@ -220,7 +221,7 @@ function PricingPage() {
       setPollStatus('waiting');
       setLoading('');
     } catch (e: any) {
-      setError('网络异常: ' + e.message);
+      setError((lang === 'zh' ? '网络异常: ' : 'Network error: ') + e.message);
       setLoading('');
     }
   }
@@ -247,8 +248,8 @@ function PricingPage() {
 
       if (!res.ok || !data.checkoutUrl) {
         setError(
-          'Creem 跳转失败: ' +
-            (data.error || '未知错误') +
+          (lang === 'zh' ? 'Creem 跳转失败: ' : 'Creem redirect failed: ') +
+            (data.error || (lang === 'zh' ? '未知错误' : 'Unknown error')) +
             (data.detail ? ' / ' + JSON.stringify(data.detail).slice(0, 200) : '')
         );
         setLoading('');
@@ -258,7 +259,7 @@ function PricingPage() {
       // 直接跳转 Creem 支付页
       window.location.href = data.checkoutUrl;
     } catch (e: any) {
-      setError('网络异常: ' + e.message);
+      setError((lang === 'zh' ? '网络异常: ' : 'Network error: ') + e.message);
       setLoading('');
     }
   }
@@ -313,6 +314,33 @@ function PricingPage() {
           </p>
         </div>
 
+        {/* 支付方式切换(老板 9-1 暂时隐藏:海外为主,只走 Creem 信用卡)
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex bg-slate-100 rounded-lg p-1">
+            <button
+              onClick={() => setPaymentMethod('creem')}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition ${
+                paymentMethod === 'creem'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600'
+              }`}
+            >
+              🌍 {t('pricing.payMethodCreem')}
+            </button>
+            <button
+              onClick={() => setPaymentMethod('wxpay')}
+              className={`px-6 py-2 rounded-md text-sm font-medium transition ${
+                paymentMethod === 'wxpay'
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600'
+              }`}
+            >
+              🇨🇳 {t('pricing.payMethodWxpay')}
+            </button>
+          </div>
+        </div>
+        */}
+
         {/* 支付方式切换(老板 9-1 暂时隐藏:ICP 备案后加回)
         <div className="flex justify-center mb-8">
           <div className="inline-flex bg-slate-100 rounded-lg p-1">
@@ -347,7 +375,7 @@ function PricingPage() {
             <button
               onClick={() => { logout(); setCurrentUser(null); }}
               className="text-xs text-gray-500 hover:text-gray-700 underline"
-            >退出</button>
+            >{lang === 'zh' ? '退出' : 'Sign out'}</button>
           </div>
         )}
 
@@ -369,7 +397,7 @@ function PricingPage() {
             >
               {p.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium">
-                  最受欢迎
+                  {lang === 'zh' ? '最受欢迎' : 'Most popular'}
                 </div>
               )}
               {(p as any).badge && !p.highlight && (
@@ -403,7 +431,7 @@ function PricingPage() {
               <button
                 onClick={() =>
                   ensureAuthed(() =>
-                    // 老板 9-1 决策:暂时只走 Creem,微信支付等 ICP 备案后再加回
+                    // 老板 9-11 决策:主战场海外,只走 Creem 信用卡
                     handleCreem(p.key)
                   )
                 }
@@ -416,16 +444,16 @@ function PricingPage() {
                     : 'bg-slate-900 text-white hover:bg-slate-800'
                 } ${loading === p.key ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
-                {loading === p.key ? '处理中...' : p.cta}
+                {loading === p.key ? (lang === 'zh' ? '处理中...' : 'Processing...') : p.cta}
               </button>
             </div>
           ))}
         </div>
 
         <div className="mt-12 text-center text-sm text-slate-500">
-          {/* 老板 9-1:暂时只走 Creem(微信支付等 ICP 备案后启用) */}
-          <p>支付由 Creem.io 处理 · 支持 Visa / MasterCard / American Express — Payments by Creem.io · Visa / MasterCard / Amex supported</p>
-          <p className="mt-2">任何国家都可以付款,即时开通</p>
+          {/* 老板 9-11:主战场海外,只走 Creem 信用卡 */}
+          <p>Payments processed by Creem.io · Visa / MasterCard / American Express supported</p>
+          <p className="mt-2">Pay from any country · Instant activation</p>
         </div>
       </div>
 
@@ -440,9 +468,9 @@ function PricingPage() {
 
             {authModal.reason === 'free_limit' && (
               <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-                🎉 您的 5 次免费试用已用完
+                🎉 You've used your 5 free trials
                 <br />
-                订阅解锁 <strong>无限次</strong> 笔记生成
+                Subscribe to unlock <strong>unlimited</strong> note generation
               </div>
             )}
 
@@ -452,7 +480,7 @@ function PricingPage() {
             <p className="text-sm text-gray-500 mb-4">
               {authMode === 'register'
                 ? t('pricing.freeCtaRegister')
-                : `${t('pricing.welcomeBack')}, ${t('home.meta.siteName') === 'MindFlow' ? (lang === 'zh' ? '继续您的学习' : 'keep learning') : ''}`}
+                : `${t('pricing.welcomeBack')}, ${t('home.meta.siteName') === 'MindFlow' ? 'keep learning' : ''}`}
             </p>
 
             <form onSubmit={async (e) => { e.preventDefault(); await handleAuth(); }}>
@@ -475,7 +503,7 @@ function PricingPage() {
               />
               <input
                 type="password"
-                placeholder={t('pricing.passwordPh') + ' (≥6)'}
+                placeholder={t('pricing.passwordPh')}
                 value={authPassword}
                 onChange={e => setAuthPassword(e.target.value)}
                 required
@@ -498,9 +526,9 @@ function PricingPage() {
 
             <div className="mt-4 text-center text-sm text-gray-500">
               {authMode === 'register' ? (
-                <>已有账户?<button onClick={() => setAuthMode('login')} className="text-primary-600 underline ml-1">去登录</button></>
+                <>{lang === 'zh' ? '已有账户?' : 'Already have an account?'}<button onClick={() => setAuthMode('login')} className="text-primary-600 underline ml-1">{lang === 'zh' ? '去登录' : 'Sign in'}</button></>
               ) : (
-                <>没账户?<button onClick={() => setAuthMode('register')} className="text-primary-600 underline ml-1">去注册</button></>
+                <>{lang === 'zh' ? '没账户?' : 'No account?'}<button onClick={() => setAuthMode('register')} className="text-primary-600 underline ml-1">{lang === 'zh' ? '去注册' : 'Sign up'}</button></>
               )}
             </div>
           </div>
@@ -521,8 +549,12 @@ function PricingPage() {
             {pollStatus === 'paid' ? (
               <div className="text-center py-8">
                 <div className="text-6xl mb-4">✅</div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">支付成功!</h2>
-                <p className="text-slate-600 mb-6">会员已开通,正在跳转...</p>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                  {lang === 'zh' ? '支付成功!' : 'Payment successful!'}
+                </h2>
+                <p className="text-slate-600 mb-6">
+                  {lang === 'zh' ? '会员已开通,正在跳转...' : 'Subscription activated. Redirecting...'}
+                </p>
                 <div className="animate-pulse text-sm text-slate-500">{t('pricing.wxpayAutoRedirect')}</div>
               </div>
             ) : (
@@ -540,7 +572,7 @@ function PricingPage() {
                 <div className="bg-white p-4 border-2 border-slate-200 rounded-xl flex justify-center">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(payModal.codeUrl)}&margin=10`}
-                    alt="支付二维码"
+                    alt={lang === 'zh' ? '支付二维码' : 'Payment QR code'}
                     width={240}
                     height={240}
                     className="block"
@@ -548,14 +580,16 @@ function PricingPage() {
                 </div>
 
                 <div className="mt-6 text-center text-sm text-slate-500 space-y-1">
-                  <p>📱 打开微信,扫一扫上方二维码</p>
-                  <p className="text-xs text-slate-400">订单号: {payModal.outTradeNo}</p>
+                  <p>📱 {lang === 'zh' ? '打开微信,扫一扫上方二维码' : 'Open WeChat and scan the QR code above'}</p>
+                  <p className="text-xs text-slate-400">
+                    {lang === 'zh' ? '订单号' : 'Order'}: {payModal.outTradeNo}
+                  </p>
                   {pollStatus === 'waiting' && (
-                    <p className="text-xs">⏳ 等待支付中...({pollCount}/30)</p>
+                    <p className="text-xs">⏳ {lang === 'zh' ? '等待支付中' : 'Awaiting payment'}...({pollCount}/30)</p>
                   )}
                   {pollStatus === 'expired' && (
                     <p className="text-xs text-orange-600 mt-2">
-                      ⏰ 等待超时,请重新发起支付或检查是否已完成
+                      ⏰ {lang === 'zh' ? '等待超时,请重新发起支付或检查是否已完成' : 'Timed out. Please retry or check if the payment went through.'}
                     </p>
                   )}
                 </div>

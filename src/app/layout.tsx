@@ -8,19 +8,26 @@ import { LangSwitcher } from '../components/LangSwitcher';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://mindflow.wang';
 
 export const metadata: Metadata = {
-  title: 'MindFlow — Let knowledge adapt to you',
+  title: 'MindFlow — Turn any PDF into 4 study materials in 1 minute',
   description:
-    'AI study assistant for college students. Upload a PDF or PPT, get structured notes, a mind map, flashcards, and AI Q&A in 1 minute. 3 free notes (lifetime), upgrade just $4.99/month — less than a coffee.',
+    'AI study assistant for college and grad-school students. Upload a lecture slide deck, a research paper, or any PDF and get structured notes, a mind map, flashcards, and AI Q&A in under a minute. 3 free notes (lifetime) — no credit card required.',
   keywords: [
     'AI note taking',
     'PDF to notes',
+    'PPT to notes',
     'AI study tool',
     'college students',
+    'grad school',
+    'MCAT prep',
+    'GRE prep',
+    'LSAT prep',
     'mind map',
     'flashcards',
     'spaced repetition',
-    'study abroad',
-    'bilingual notes'
+    'international students',
+    'bilingual notes',
+    'finals week',
+    'study tool'
   ],
   authors: [{ name: 'MindFlow' }],
   creator: 'MindFlow',
@@ -37,9 +44,9 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: APP_URL,
     siteName: 'MindFlow',
-    title: 'MindFlow — Let knowledge adapt to you',
+    title: 'MindFlow — Turn any PDF into 4 study materials in 1 minute',
     description:
-      'AI study assistant for college students. Upload a PDF, get 4 ready-to-study things in 1 minute. 3 free notes (lifetime), upgrade $4.99/month.',
+      'Upload a PDF, get structured notes + mind map + flashcards + AI Q&A in 1 minute. 3 free notes (lifetime) — no credit card required.',
     images: [
       {
         url: '/og-image.svg',
@@ -51,9 +58,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MindFlow — Let knowledge adapt to you',
+    title: 'MindFlow — Turn any PDF into 4 study materials in 1 minute',
     description:
-      'AI study assistant for college students. 3 free notes (lifetime), upgrade $4.99/month — less than a coffee.',
+      'AI study assistant for college and grad-school students. 3 free notes (lifetime) — no credit card required.',
     images: ['/og-image.svg'],
     creator: '@mindflow_wang'
   },
@@ -121,11 +128,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <LangProvider lang={lang}>
-          {/* 顶部 global navbar(每个页面都有)+ 嵌入语言切换器 */}
+          {/* 顶部 global navbar(每个页面都有)+ 嵌入语言切换器 + 导航链接 */}
           <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
-              <div className="text-xs text-gray-400">
-                MindFlow
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex justify-between items-center gap-4">
+              <a href="/" className="flex items-center gap-2 text-gray-900 font-bold hover:text-primary-600">
+                <span className="text-lg">🧠 MindFlow</span>
+              </a>
+              <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
+                <a href="/#how" className="hover:text-primary-600">{lang === 'zh' ? '怎么用' : 'How it works'}</a>
+                <a href="/#compare" className="hover:text-primary-600">{lang === 'zh' ? '对比' : 'Compare'}</a>
+                <a href="/pricing" className="hover:text-primary-600">{lang === 'zh' ? '定价' : 'Pricing'}</a>
+                <a href="/#faq" className="hover:text-primary-600">FAQ</a>
+                <a href="/upload" className="bg-primary-600 text-white px-4 py-1.5 rounded-lg hover:bg-primary-700">
+                  {lang === 'zh' ? '免费试用' : 'Try free'}
+                </a>
               </div>
               <LangSwitcher country={country} />
             </div>

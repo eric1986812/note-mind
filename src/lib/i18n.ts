@@ -1,10 +1,12 @@
 export type Lang = 'zh' | 'en';
 
-export const defaultLang: Lang = 'zh';
+// 老板 9-11 决策:主战场转向海外用户,默认英文
+// 中文保留为辅助(海外华人 / 港澳台 / 新加坡 / 中国大陆)
+export const defaultLang: Lang = 'en';
 
 // 国家代码 → 语言
-// 中国 / 港澳台 / 新加坡(华人圈)→ 中文
-// 其他所有国家 → 英文
+// 华人圈(CN/HK/MO/TW/SG/MY)→ 中文
+// 其他所有国家 → 英文(主战场)
 export function langFromCountry(countryCode: string | null | undefined): Lang {
   if (!countryCode) return defaultLang;
   const cnLocale = ['CN', 'HK', 'MO', 'TW', 'SG', 'MY'];

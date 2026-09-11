@@ -29,6 +29,8 @@ export function middleware(req: NextRequest) {
 
   // 3. 首次访问 → 看 IP 国家 → 默认语言
   // Vercel 自动注入 x-vercel-ip-country(海外节点,免费)
+  // 老板 9-11 决策:主战场海外,默认英文
+  // 华人圈(CN/HK/MO/TW/SG/MY)→ 中文,其他 → 英文
   const country =
     req.headers.get('x-vercel-ip-country') ||
     req.headers.get('cf-ipcountry') || // Cloudflare 兼容

@@ -23,15 +23,15 @@ type Task = {
 export default function UploadPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [progressText, setProgressText] = useState('');
   const [elapsed, setElapsed] = useState(0);
   const [tasks, setTasks] = useState<Task[]>([
-    { key: 'parse', icon: FileText, label: '解析文件', state: 'pending', progress: 0 },
-    { key: 'ai', icon: Sparkles, label: 'AI 生成(并发)', state: 'pending', progress: 0 },
-    { key: 'save', icon: Save, label: '保存笔记', state: 'pending', progress: 0 }
+    { key: 'parse', icon: FileText, label: '', state: 'pending', progress: 0 },
+    { key: 'ai', icon: Sparkles, label: '', state: 'pending', progress: 0 },
+    { key: 'save', icon: Save, label: '', state: 'pending', progress: 0 }
   ]);
   const [overallPercent, setOverallPercent] = useState(0);
   const [chunks, setChunks] = useState<ChunkMeta[] | null>(null);
@@ -66,7 +66,8 @@ export default function UploadPage() {
         }
 
         // 显示成功提示
-        alert(`🎉 支付成功!${plan === 'yearly' ? '年度版' : '学期版'}会员已开通,开始使用吧!`);
+        const planName = lang === 'zh' ? (plan === 'yearly' ? '年度版' : '学期版') : (plan === 'yearly' ? 'Annual' : 'Monthly');
+        alert(t('upload.successAlert').replace('{plan}', planName));
         // 清掉 query,防止刷新重复
         router.replace('/upload');
       } else {
@@ -135,7 +136,7 @@ export default function UploadPage() {
     }
 
     setUploading(true);
-    setProgressText('正在解析文件...');
+    setProgressText(lang === 'zh' ? '正在解析文件...' : 'Parsing file...');
     setTaskState('parse', 'active');
 
     try {
@@ -167,17 +168,9 @@ export default function UploadPage() {
       const isOverloaded = /529|overloaded|rate_limit|服务繁忙|请稍后|稍后重试|网络|timeout|ETIMEDOUT|ENOTFOUND/i.test(msg);
 
       if (isOverloaded) {
-        alert(
-          '😅 MiniMax 服务器正在高峰期繁忙\n\n' +
-          '📌 已自动重试 3 次仍未成功,通常是整点高峰(09:00 / 14:00 / 20:00)\n\n' +
-          '💡 建议:\n' +
-          '• 等 3-5 分钟再点重试\n' +
-          '• 换到非整点上传(成功率 ↑90%)\n' +
-          '• 暂时用 ≤2500 字的短文测\n\n' +
-          '错误详情: ' + msg.slice(0, 150)
-        );
+        alert(t('upload.alertOverloaded').replace('{msg}', msg.slice(0, 150)));
       } else {
-        alert('出错了: ' + msg);
+        alert(t('upload.alertGeneric').replace('{msg}', msg));
       }
       setUploading(false);
       setProgressText('');
@@ -187,7 +180,7 @@ export default function UploadPage() {
 
   const runGeneration = async (filename: string, text: string) => {
     setUploading(true);
-    setProgressText('AI 正在同时生成笔记 / 导图 / 卡片...');
+    setProgressText(lang === 'zh' ? 'AI 正在同时生成笔记 / 导图 / 卡片...' : 'AI is generating notes / mind map / flashcards in parallel...');
     setTaskState('ai', 'active');
     try {
       const t0 = Date.now();
@@ -247,9 +240,15 @@ export default function UploadPage() {
       // 显示剩余免费次数(只有未付费用户才看)
       const remaining = getRemainingFree();
       if (remaining > 0 && remaining <= 2) {
-        sessionStorage.setItem('getmind_quota_warning', `还剩 ${remaining} 次免费(终身),之后需要订阅 $4.99/月(一杯奶茶钱)`);
+        const warnMsg = lang === 'zh'
+          ? `还剩 ${remaining} 次免费(终身),之后需要订阅 $4.99/月`
+          : `${remaining} free notes left (lifetime). After that, subscribe for $4.99/mo.`;
+        sessionStorage.setItem('getmind_quota_warning', warnMsg);
       } else if (remaining === 0) {
-        sessionStorage.setItem('getmind_quota_warning', '免费试用已用完(终身 3 次),订阅学期版 $4.99/月 无限用');
+        const warnMsg = lang === 'zh'
+          ? '免费试用已用完(终身 3 次),订阅学期版 $4.99/月 无限用'
+          : 'Free trial used up (3 lifetime notes). Subscribe for $4.99/mo for unlimited.';
+        sessionStorage.setItem('getmind_quota_warning', warnMsg);
       }
       router.push(`/note?id=${id}`);
 
@@ -258,14 +257,14 @@ export default function UploadPage() {
         const { tryClaimRewardForCurrentUser } = await import('../../lib/referral');
         const reward = tryClaimRewardForCurrentUser();
         if (reward.rewarded) {
-          console.log('🎁 你的邀请人获得了 30 天会员奖励');
+          console.log(lang === 'zh' ? '🎁 你的邀请人获得了 30 天会员奖励' : '🎁 Your referrer earned 30 days of premium');
         }
       } catch (e) {
         // 静默失败 — 不影响用户主流程
         console.warn('referral claim failed:', e);
       }
     } catch (e: any) {
-      alert('出错了: ' + e.message);
+      alert(t('upload.alertGeneric').replace('{msg}', e.message));
       setUploading(false);
       setProgressText('');
     }
@@ -274,14 +273,14 @@ export default function UploadPage() {
   // 用户确认选完章节后
   const onConfirmChunks = async () => {
     if (!chunks || selectedChunks.size === 0) {
-      alert('请至少选择一个章节');
+      alert(t('upload.selectAtLeastOne'));
       return;
     }
     const selectedText = chunks
       .filter(c => selectedChunks.has(c.index))
       .map(c => `## ${c.title}\n\n${c.content}`)
       .join('\n\n');
-    const originalName = file?.name || '资料';
+    const originalName = file?.name || (lang === 'zh' ? '资料' : 'document');
     setChunks(null);
     setUploading(true);
     setTaskState('ai', 'active');
@@ -319,8 +318,11 @@ export default function UploadPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-primary-50 to-white">
       <div className="max-w-2xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-3">上传你的学习资料</h1>
-          <p className="text-gray-600 mb-2">支持 PPT、PDF、Word、<strong>图片拍照/截图</strong>。最大 20MB。</p>
+        <h1 className="text-4xl font-bold text-gray-900 mb-3">{t('upload.pageTitle')}</h1>
+          <p
+            className="text-gray-600 mb-2"
+            dangerouslySetInnerHTML={{ __html: t('upload.pageDesc') }}
+          />
 
         {/* 3 个常见场景引导(降低跳出率) */}
         {!chunks && (
@@ -335,12 +337,12 @@ export default function UploadPage() {
                 <p className="text-xs text-gray-500 leading-relaxed">{t('upload.example1Desc')}</p>
               </div>
               <div className="bg-white p-4 rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition">
-                <div className="text-2xl mb-1.5">🌏</div>
+                <div className="text-2xl mb-1.5">🌍</div>
                 <p className="text-sm font-bold text-gray-900 mb-1">{t('upload.example2Title')}</p>
                 <p className="text-xs text-gray-500 leading-relaxed">{t('upload.example2Desc')}</p>
               </div>
               <div className="bg-white p-4 rounded-xl border border-gray-200 hover:border-primary-400 hover:shadow-md transition">
-                <div className="text-2xl mb-1.5">📚</div>
+                <div className="text-2xl mb-1.5">🧪</div>
                 <p className="text-sm font-bold text-gray-900 mb-1">{t('upload.example3Title')}</p>
                 <p className="text-xs text-gray-500 leading-relaxed">{t('upload.example3Desc')}</p>
               </div>
@@ -349,7 +351,7 @@ export default function UploadPage() {
         )}
           {/* 顶部状态条 */}
           {quotaInfo && (
-            <div className={`mb-6 px-4 py-2 rounded-lg text-sm flex items-center justify-between ${
+            <div className={`mb-6 px-4 py-2 rounded-lg text-sm flex items-center justify-between flex-wrap gap-2 ${
               quotaInfo.isPaid
                 ? 'bg-green-50 text-green-800 border border-green-200'
                 : quotaInfo.remaining <= 1
@@ -360,20 +362,20 @@ export default function UploadPage() {
             }`}>
               <span>
                 {quotaInfo.isPaid
-                  ? `✅ 已订阅 ${localStorage.getItem('getmind_paid_plan') || ''} · 无限次生成`
-                  : `🆓 免费试用 · 终身还剩 ${quotaInfo.remaining}/${getFreeLimit()} 次`}
+                  ? t('upload.quotaPaid').replace('{plan}', localStorage.getItem('getmind_paid_plan') || '')
+                  : t('upload.quotaFree').replace('{remaining}', String(quotaInfo.remaining)).replace('{limit}', String(getFreeLimit()))}
               </span>
               {quotaInfo.userEmail && (
                 <span className="text-xs text-gray-500">{quotaInfo.userEmail}</span>
               )}
               <a href="/invite" className="text-xs text-primary-600 hover:underline font-medium">
-                🎁 邀请好友得 1 个月
+                {lang === 'zh' ? '🎁 邀请好友得 1 个月' : '🎁 Invite a friend, get 1 month free'}
               </a>
               {!quotaInfo.isPaid && (
                 <>
-                  <a href="/pricing" className="text-xs underline">升级 $4.99/月</a>
+                  <a href="/pricing" className="text-xs underline">{t('upload.upgradeLink')}</a>
                   <span className="text-xs text-gray-400">·</span>
-                  <span className="text-xs text-gray-500">下载需订阅</span>
+                  <span className="text-xs text-gray-500">{t('upload.downloadNote')}</span>
                 </>
               )}
             </div>
@@ -385,8 +387,8 @@ export default function UploadPage() {
             <label className="block">
               <div className="border-2 border-dashed border-primary-300 rounded-xl p-12 text-center cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition">
                 <Upload className="w-12 h-12 text-primary-600 mx-auto mb-4" />
-                <p className="text-gray-700 font-medium mb-1">{file ? file.name : '点击或拖拽文件到这里'}</p>
-                <p className="text-sm text-gray-500">支持 PPT / PDF / Word / 图片拍照 / 截图</p>
+                <p className="text-gray-700 font-medium mb-1">{file ? file.name : t('upload.dropTitle')}</p>
+                <p className="text-sm text-gray-500">{t('upload.dropSub')}</p>
                 <input
                   type="file"
                   className="hidden"
@@ -399,7 +401,7 @@ export default function UploadPage() {
             {file && !uploading && (
               <div className="mt-4 p-4 bg-primary-50 rounded-lg text-sm text-primary-800 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
-                <span>已选择: {file.name} ({(file.size / 1024).toFixed(0)} KB)</span>
+                <span>{t('upload.selectedFile')}: {file.name} ({(file.size / 1024).toFixed(0)} KB)</span>
               </div>
             )}
 
@@ -429,7 +431,7 @@ export default function UploadPage() {
                   />
                 </div>
                 <p className="text-xs text-gray-500 mt-1.5">
-                  已用 {elapsed}s · 预计还需 ~{remaining}s
+                  {t('upload.progressElapsed')} {elapsed}s · {t('upload.progressEta')} ~{remaining}s
                 </p>
 
                 {/* 分步状态 */}
@@ -443,7 +445,7 @@ export default function UploadPage() {
                       </div>
                       <t.icon className={`w-4 h-4 flex-shrink-0 ${t.state === 'pending' ? 'text-gray-300' : 'text-primary-600'}`} />
                       <span className={`flex-1 ${t.state === 'pending' ? 'text-gray-400' : t.state === 'done' ? 'text-primary-700' : 'text-gray-800 font-medium'}`}>
-                        {t.label}
+                        {t.key === 'parse' ? t('upload.taskParse') : t.key === 'ai' ? t('upload.taskAi') : t.key === 'save' ? t('upload.taskSave') : t.label}
                       </span>
                       <span className={`text-xs tabular-nums ${t.state === 'pending' ? 'text-gray-300' : 'text-gray-600'}`}>
                         {Math.floor(t.progress)}%
@@ -453,7 +455,7 @@ export default function UploadPage() {
                 </div>
 
                 <p className="text-xs text-gray-400 mt-4 text-center">
-                  💡 3 个 AI 任务并发执行,通常 1 分钟左右完成
+                  {t('upload.parallelHint')}
                 </p>
               </div>
             )}
@@ -464,11 +466,13 @@ export default function UploadPage() {
         {chunks && (
           <div className="bg-white p-8 rounded-2xl shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-gray-900">📑 选择要生成的章节</h2>
-              <span className="text-sm text-gray-500">共 {chunks.length} 章, 已选 {selectedChunks.size}</span>
+              <h2 className="text-xl font-bold text-gray-900">{t('upload.chunksTitle')}</h2>
+              <span className="text-sm text-gray-500">
+                {t('upload.chunksCount').replace('{total}', String(chunks.length)).replace('{selected}', String(selectedChunks.size))}
+              </span>
             </div>
             <p className="text-sm text-gray-500 mb-4">
-              AI 已自动识别文档结构(标题/章节),可只生成需要的部分,避免内容过载。默认全选。
+              {t('upload.chunksDesc')}
             </p>
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {chunks.map(c => {
@@ -478,7 +482,7 @@ export default function UploadPage() {
                     <input type="checkbox" checked={checked} onChange={() => toggleChunk(c.index)} className="mt-1" />
                     <div className="flex-1 min-w-0">
                       <div className="font-medium text-gray-900">{c.title}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">{c.content.length} 字</div>
+                      <div className="text-xs text-gray-500 mt-0.5">{c.content.length} {lang === 'zh' ? '字' : 'chars'}</div>
                     </div>
                     {checked && <Check className="w-5 h-5 text-primary-600 flex-shrink-0" />}
                   </label>
@@ -487,21 +491,21 @@ export default function UploadPage() {
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={resetChunks} className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
-                返回上传
+                {t('upload.backToUpload')}
               </button>
               <button
                 onClick={onConfirmChunks}
                 disabled={selectedChunks.size === 0}
                 className="flex-1 bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                {uploading ? <><Loader2 className="w-4 h-4 animate-spin" />{progressText}</> : <><Sparkles className="w-4 h-4" />开始生成 (已选 {selectedChunks.size} 章)</>}
+                {uploading ? <><Loader2 className="w-4 h-4 animate-spin" />{progressText}</> : <><Sparkles className="w-4 h-4" />{t('upload.startGeneration').replace('{n}', String(selectedChunks.size))}</>}
               </button>
             </div>
           </div>
         )}
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          免费用户每月可处理 5 份资料 · 学期版用户无限
+          {t('upload.freeNote')}
         </div>
       </div>
     </main>
